@@ -203,7 +203,6 @@ class TipoPagamentoServiceImplTest {
 
         verify(repository, times(1))
                 .deleteById(anyLong());
-
     }
 
     @Test
