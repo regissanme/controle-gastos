@@ -60,7 +60,7 @@ public class TipoPagamentoServiceImpl implements ITipoPagamentoService<TipoPagam
     private void findByTipo(TipoPagamento tipoPagamento) {
         Optional<TipoPagamento> byTipo = tipoPagamentoRepository.findByTipo(tipoPagamento.getTipo());
 
-        if (byTipo.isPresent() && byTipo.get().getId().equals(tipoPagamento.getId())) {
+        if (byTipo.isPresent() && !byTipo.get().getId().equals(tipoPagamento.getId())) {
             throw new EntityExistsException(
                     String.format("Um Tipo de Pagamento com o tipo %s já existe!", tipoPagamento.getTipo())
             );
