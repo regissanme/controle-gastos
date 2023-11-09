@@ -2,17 +2,23 @@ package br.com.rsanme.controlegastos.services.impl;
 
 import br.com.rsanme.controlegastos.models.TipoPagamento;
 import br.com.rsanme.controlegastos.repositories.TipoPagamentoRepository;
-import org.junit.jupiter.api.Assertions;
+import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
 
 /**
  * Projeto: controle-gastos
@@ -23,6 +29,8 @@ import java.util.Optional;
 @ExtendWith(MockitoExtension.class)
 class TipoPagamentoServiceImplTest {
 
+    public static final Long ID = 1L;
+    public static final String TIPO_PAGAMENTO_DINHEIRO = "Dinheiro";
     @InjectMocks
     private TipoPagamentoServiceImpl service;
 
@@ -38,39 +46,106 @@ class TipoPagamentoServiceImplTest {
     }
 
 
-
     @Test
     void whenFindAllThenReturnList() {
         List<TipoPagamento> list = List.of(tipoPagamento);
 
-        Mockito.when(repository.findAll()).thenReturn(list);
+        when(repository.findAll()).thenReturn(list);
 
         List<TipoPagamento> response = service.findAll();
 
-        Assertions.assertNotNull(response);
-        Assertions.assertEquals(1, response.size());
-        Assertions.assertEquals(TipoPagamento.class, response.get(0).getClass());
-        Assertions.assertEquals(tipoPagamento, response.get(0));
+        assertNotNull(response);
+        assertEquals(1, response.size());
+        assertEquals(TipoPagamento.class, response.get(0).getClass());
+        assertEquals(tipoPagamento, response.get(0));
+
+        verify(repository, times(1))
+                .findAll();
     }
 
     @Test
-    void findById() {
+    void whenFindByIdThenSuccess() {
+
+        when(repository.findById(anyLong())).thenReturn(optionalTipoPagamento);
+
+        TipoPagamento response = service.findById(ID);
+
+        assertNotNull(response);
+        assertEquals(TipoPagamento.class, response.getClass());
+        assertEquals(TIPO_PAGAMENTO_DINHEIRO, response.getTipo());
+        assertEquals(ID, response.getId());
+
+        verify(repository, times(1))
+                .findById(anyLong());
     }
 
     @Test
-    void create() {
+    void whenFindByIdThenThrowsNotFound() {
+
+        String errorMessage = String.format("Tipo de Pagamento com Id %s não encontrado!", ID);
+
+        assertThatThrownBy(() -> service.findById(ID))
+                .hasMessage(errorMessage)
+                .isInstanceOf(EntityNotFoundException.class);
+
+        verify(repository, times(1))
+                .findById(anyLong());
     }
 
     @Test
-    void update() {
+    void whenCreateThenReturnSuccess() {
+        TipoPagamento paraSalvar = new TipoPagamento();
+        paraSalvar.setTipo(TIPO_PAGAMENTO_DINHEIRO);
+
+        when(repository.findByTipo(anyString())).thenReturn(Optional.empty());
+        when(repository.save(any())).thenReturn(tipoPagamento);
+
+        TipoPagamento response = service.create(paraSalvar);
+
+        assertNotNull(response);
+        assertEquals(TipoPagamento.class, response.getClass());
+        assertEquals(tipoPagamento.getId(), response.getId());
+        assertEquals(tipoPagamento.getTipo(), response.getTipo());
+
+        verify(repository, times(1))
+                .save(any());
     }
 
     @Test
-    void delete() {
+    void whenCreateThenThrowsException() {
+
+        TipoPagamento paraSalvar = new TipoPagamento();
+        paraSalvar.setTipo(TIPO_PAGAMENTO_DINHEIRO);
+
+        String errorMessage = String.format(
+                "Um Tipo de Pagamento com o tipo %s já existe!", TIPO_PAGAMENTO_DINHEIRO);
+
+        when(repository.findByTipo(anyString())).thenReturn(optionalTipoPagamento);
+
+//        optionalTipoPagamento.get().setId(2L);
+
+        assertThatThrownBy(()-> service.create(paraSalvar))
+                .hasMessage(errorMessage)
+                        .isInstanceOf(EntityExistsException.class);
+
+        verify(repository, times(1))
+                .findByTipo(TIPO_PAGAMENTO_DINHEIRO);
+
+        verify(repository, never())
+                .save(any());
+
+    }
+
+    @Test
+    void whenUpdateThenReturnSuccess() {
+    }
+
+    @Test
+    void whenDeleteThenSuccess() {
     }
 
     private void createInstances() {
-        tipoPagamento = new TipoPagamento(1L, "Dinheiro");
+        tipoPagamento = new TipoPagamento(1L, TIPO_PAGAMENTO_DINHEIRO);
         optionalTipoPagamento = Optional.of(tipoPagamento);
     }
 }
