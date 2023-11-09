@@ -15,11 +15,11 @@ import java.util.Optional;
  * Data: 09/11/2023
  * Hora: 16:52
  */
-public class TipoPagamentoImpl implements ITipoPagamentoService<TipoPagamento> {
+public class TipoPagamentoServiceImpl implements ITipoPagamentoService<TipoPagamento> {
 
     private final TipoPagamentoRepository tipoPagamentoRepository;
 
-    public TipoPagamentoImpl(TipoPagamentoRepository tipoPagamentoRepository) {
+    public TipoPagamentoServiceImpl(TipoPagamentoRepository tipoPagamentoRepository) {
         this.tipoPagamentoRepository = tipoPagamentoRepository;
     }
 
