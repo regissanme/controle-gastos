@@ -122,18 +122,15 @@ class TipoPagamentoServiceImplTest {
 
         when(repository.findByTipo(anyString())).thenReturn(optionalTipoPagamento);
 
-//        optionalTipoPagamento.get().setId(2L);
-
-        assertThatThrownBy(()-> service.create(paraSalvar))
+        assertThatThrownBy(() -> service.create(paraSalvar))
                 .hasMessage(errorMessage)
-                        .isInstanceOf(EntityExistsException.class);
+                .isInstanceOf(EntityExistsException.class);
 
         verify(repository, times(1))
                 .findByTipo(TIPO_PAGAMENTO_DINHEIRO);
 
         verify(repository, never())
                 .save(any());
-
     }
 
     @Test
