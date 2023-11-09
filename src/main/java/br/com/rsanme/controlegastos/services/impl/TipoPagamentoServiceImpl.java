@@ -47,6 +47,7 @@ public class TipoPagamentoServiceImpl implements ITipoPagamentoService<TipoPagam
     @Override
     public TipoPagamento update(TipoPagamento tipoPagamento) {
         findById(tipoPagamento.getId());
+        findByTipo(tipoPagamento);
 
         return tipoPagamentoRepository.save(tipoPagamento);
     }
@@ -58,7 +59,7 @@ public class TipoPagamentoServiceImpl implements ITipoPagamentoService<TipoPagam
     }
 
     private void findByTipo(TipoPagamento tipoPagamento) {
-        Optional<TipoPagamento> byTipo = tipoPagamentoRepository.findByTipo(tipoPagamento.getTipo());
+        var byTipo = tipoPagamentoRepository.findByTipo(tipoPagamento.getTipo());
 
         if (byTipo.isPresent() && !byTipo.get().getId().equals(tipoPagamento.getId())) {
             throw new EntityExistsException(
