@@ -4,6 +4,8 @@ import br.com.rsanme.controlegastos.models.TipoPagamento;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 /**
  * Projeto: controle-gastos
  * Desenvolvedor: Reginaldo Santos de Medeiros (regissanme)
@@ -12,4 +14,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface TipoPagamentoRepository extends JpaRepository<TipoPagamento, Long> {
+
+    Optional<TipoPagamento> findByTipo(String tipo);
 }
