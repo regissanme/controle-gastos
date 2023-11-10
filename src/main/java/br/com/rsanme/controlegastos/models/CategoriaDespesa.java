@@ -1,6 +1,7 @@
 package br.com.rsanme.controlegastos.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,7 @@ public class CategoriaDespesa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "A descrição da categoria é obrigatória!")
     @Column(unique = true, nullable = false)
     private String descricao;
 
