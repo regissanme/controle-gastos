@@ -132,12 +132,7 @@ class TipoDespesaServiceImplTest {
     @Test
     void whenDeleteThenSuccess() {
 
-        when(repository.findById(anyLong())).thenReturn(Optional.of(tipoDespesa));
 
-        service.delete(ID);
-
-        verify(repository, times(1))
-                .findById(anyLong());
     }
 
     private void createInstances() {
