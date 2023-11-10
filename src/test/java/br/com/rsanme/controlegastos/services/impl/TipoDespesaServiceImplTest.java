@@ -5,6 +5,7 @@ import br.com.rsanme.controlegastos.models.TipoDespesa;
 import br.com.rsanme.controlegastos.repositories.TipoDespesaRepository;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.ConstraintDefinitionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,6 +35,7 @@ class TipoDespesaServiceImplTest {
     public static final String DESCRICAO_COMBUSTIVEL = "Combustível";
     public static final String ERRO_NOT_FOUND = "Tipo de Despesa com Id " + ID + " não encontrado!";
     public static final String ERRO_ALREADY_EXISTS = "Um Tipo de Despesa com a descrição " + DESCRICAO_COMBUSTIVEL + " já existe!";
+    public static final String ERRO_INVALID_DATA = "Dados inválidos!";
 
 
     @InjectMocks
@@ -121,6 +123,21 @@ class TipoDespesaServiceImplTest {
                 .isInstanceOf(EntityExistsException.class);
 
         verify(repository, times(1))
+                .findByDescricao(anyString());
+
+        verify(repository, never())
+                .save(any());
+    }
+
+    @Test
+    void whenCreateThenTrowsInvalidData() {
+        TipoDespesa toSave = new TipoDespesa(null, DESCRICAO_COMBUSTIVEL, null);
+
+        assertThatThrownBy(() -> service.create(toSave))
+                .hasMessage(ERRO_INVALID_DATA)
+                .isInstanceOf(ConstraintDefinitionException.class);
+
+        verify(repository, never())
                 .findByDescricao(anyString());
 
         verify(repository, never())
