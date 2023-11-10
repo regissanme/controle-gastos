@@ -21,7 +21,7 @@ public class TipoDespesaServiceImpl implements ITipoDespesaService {
 
     @Override
     public List findAll() {
-        return null;
+        return repository.findAll();
     }
 
     @Override
