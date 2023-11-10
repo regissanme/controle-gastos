@@ -32,7 +32,7 @@ public class CategoriaDespesa {
     private String descricao;
 
     @OneToMany(mappedBy = "categoriaDespesa")
-    private List<TipoDespesa> tipoDespesa;
+    private List<TipoDespesa> tiposDespesas;
 
     @Override
     public boolean equals(Object o) {
@@ -45,5 +45,14 @@ public class CategoriaDespesa {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "CategoriaDespesa{" +
+                "id=" + id +
+                ", descricao='" + descricao + '\'' +
+                ", tiposDespesas=" + tiposDespesas +
+                '}';
     }
 }
