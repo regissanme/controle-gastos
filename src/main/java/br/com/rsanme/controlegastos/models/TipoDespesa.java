@@ -1,6 +1,8 @@
 package br.com.rsanme.controlegastos.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,9 +22,11 @@ public class TipoDespesa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "A descricao é obrigatória!")
     @Column(unique = true, nullable = false)
     private String descricao;
 
+    @NotNull(message = "A categoria da despesa é obrigatória!")
     @ManyToOne
     @JoinColumn(name = "categoria_despesa_id")
     private CategoriaDespesa categoriaDespesa;
