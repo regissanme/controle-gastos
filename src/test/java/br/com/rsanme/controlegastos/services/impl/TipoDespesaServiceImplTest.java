@@ -30,7 +30,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class TipoDespesaServiceImplTest {
 
-    public static final Long ID = 1l;
+    public static final Long ID = 1L;
     public static final String DESCRICAO_TRANSPORTE = "Transporte";
     public static final String DESCRICAO_COMBUSTIVEL = "Combustível";
     public static final String ERRO_NOT_FOUND = "Tipo de Despesa com Id " + ID + " não encontrado!";
@@ -63,6 +63,7 @@ class TipoDespesaServiceImplTest {
         assertEquals(TipoDespesa.class, listResponse.get(0).getClass());
         assertEquals(DESCRICAO_COMBUSTIVEL, listResponse.get(0).getDescricao());
         assertEquals(DESCRICAO_TRANSPORTE, listResponse.get(0).getCategoriaDespesa().getDescricao());
+        assertNotNull(listResponse.get(0).getCategoriaDespesa());
 
         verify(repository, times(1))
                 .findAll();
