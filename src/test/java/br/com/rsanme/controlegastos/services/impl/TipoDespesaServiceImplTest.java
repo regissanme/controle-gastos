@@ -146,6 +146,24 @@ class TipoDespesaServiceImplTest {
     }
 
     @Test
+    void whenUpdateThenTrowsAlreadyExists() {
+        TipoDespesa toUpdate = new TipoDespesa(2L, DESCRICAO_COMBUSTIVEL, categoriaDespesa);
+
+        when(repository.findById(anyLong())).thenReturn(Optional.of(tipoDespesa));
+        when(repository.findByDescricao(anyString())).thenReturn(Optional.of(tipoDespesa));
+
+        assertThatThrownBy(() -> service.update(toUpdate))
+                .hasMessage(ERRO_ALREADY_EXISTS)
+                .isInstanceOf(EntityExistsException.class);
+
+        verify(repository, times(1))
+                .findByDescricao(anyString());
+
+        verify(repository, never())
+                .save(any());
+    }
+
+    @Test
     void whenDeleteThenSuccess() {
         when(repository.findById(anyLong())).thenReturn(Optional.of(tipoDespesa));
 
