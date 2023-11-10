@@ -64,6 +64,7 @@ public class TipoDespesaServiceImpl implements ITipoDespesaService<TipoDespesa> 
     @Override
     public void delete(Long id) {
         findById(id);
+
         repository.deleteById(id);
     }
 
