@@ -2,6 +2,7 @@ package br.com.rsanme.controlegastos.services.impl;
 
 import br.com.rsanme.controlegastos.repositories.TipoDespesaRepository;
 import br.com.rsanme.controlegastos.services.ITipoDespesaService;
+import jakarta.persistence.EntityNotFoundException;
 
 import java.util.List;
 
@@ -26,7 +27,11 @@ public class TipoDespesaServiceImpl implements ITipoDespesaService {
 
     @Override
     public Object findById(Long id) {
-        return null;
+        return repository.findById(id)
+                .orElseThrow(
+                        () -> new EntityNotFoundException(
+                                String.format("Tipo de Despesa com Id %s não encontrado!", id))
+                );
     }
 
     @Override
