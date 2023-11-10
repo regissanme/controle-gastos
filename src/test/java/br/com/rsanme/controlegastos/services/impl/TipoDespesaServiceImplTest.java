@@ -187,6 +187,20 @@ class TipoDespesaServiceImplTest {
                 .findById(anyLong());
     }
 
+    @Test
+    void whenDeleteThenTrowsNotFound() {
+
+        assertThatThrownBy(() -> service.delete(ID))
+                .hasMessage(ERRO_NOT_FOUND)
+                .isInstanceOf(EntityNotFoundException.class);
+
+        verify(repository, times(1))
+                .findById(anyLong());
+
+        verify(repository, never())
+                .deleteById(anyLong());
+    }
+
     private void createInstances() {
         categoriaDespesa = new CategoriaDespesa();
         categoriaDespesa.setId(1L);
