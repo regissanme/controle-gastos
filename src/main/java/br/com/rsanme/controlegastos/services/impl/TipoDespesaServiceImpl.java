@@ -1,10 +1,13 @@
 package br.com.rsanme.controlegastos.services.impl;
 
+import br.com.rsanme.controlegastos.models.TipoDespesa;
 import br.com.rsanme.controlegastos.repositories.TipoDespesaRepository;
 import br.com.rsanme.controlegastos.services.ITipoDespesaService;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Projeto: controle-gastos
@@ -46,6 +49,20 @@ public class TipoDespesaServiceImpl implements ITipoDespesaService {
 
     @Override
     public void delete(Long id) {
+
+    }
+
+    private void findByDescricao(TipoDespesa tipoDespesa){
+
+        Optional<TipoDespesa> byDescricao = repository.findByDescricao(tipoDespesa.getDescricao());
+
+        if(byDescricao.isPresent() && !byDescricao.get().getId().equals(tipoDespesa.getId())){
+            throw new EntityExistsException(
+                    String.format(
+                            "Um Tipo de Despesa com a descrição %s já existe!", tipoDespesa.getDescricao()
+                    )
+            );
+        }
 
     }
 }
