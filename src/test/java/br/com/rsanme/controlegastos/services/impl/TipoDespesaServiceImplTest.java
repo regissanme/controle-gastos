@@ -3,6 +3,7 @@ package br.com.rsanme.controlegastos.services.impl;
 import br.com.rsanme.controlegastos.models.CategoriaDespesa;
 import br.com.rsanme.controlegastos.models.TipoDespesa;
 import br.com.rsanme.controlegastos.repositories.TipoDespesaRepository;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -106,6 +107,23 @@ class TipoDespesaServiceImplTest {
         assertEquals(DESCRICAO_TRANSPORTE, response.getCategoriaDespesa().getDescricao());
 
         verify(repository, times(1))
+                .save(any());
+    }
+
+    @Test
+    void whenCreateThenTrowsAlreadyExists() {
+        TipoDespesa toSave = new TipoDespesa(null, DESCRICAO_COMBUSTIVEL, categoriaDespesa);
+
+        when(repository.findByDescricao(anyString())).thenReturn(Optional.of(tipoDespesa));
+
+        assertThatThrownBy(() -> service.create(toSave))
+                .hasMessage(ERRO_ALREADY_EXISTS)
+                .isInstanceOf(EntityExistsException.class);
+
+        verify(repository, times(1))
+                .findByDescricao(anyString());
+
+        verify(repository, never())
                 .save(any());
     }
 
