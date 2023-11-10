@@ -146,6 +146,20 @@ class TipoDespesaServiceImplTest {
     }
 
     @Test
+    void whenUpdateThenTrowsNotFound() {
+
+        assertThatThrownBy(() -> service.update(tipoDespesa))
+                .hasMessage(ERRO_NOT_FOUND)
+                .isInstanceOf(EntityNotFoundException.class);
+
+        verify(repository, times(1))
+                .findById(anyLong());
+
+        verify(repository, never())
+                .save(any());
+    }
+
+    @Test
     void whenUpdateThenTrowsAlreadyExists() {
         TipoDespesa toUpdate = new TipoDespesa(2L, DESCRICAO_COMBUSTIVEL, categoriaDespesa);
 
