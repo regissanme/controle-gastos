@@ -223,7 +223,7 @@ class TipoDespesaServiceImplTest {
         categoriaDespesa = new CategoriaDespesa();
         categoriaDespesa.setId(1L);
         categoriaDespesa.setDescricao(DESCRICAO_TRANSPORTE);
-        categoriaDespesa.setTipoDespesa(null);
+        categoriaDespesa.setTiposDespesas(null);
 
         tipoDespesa = new TipoDespesa(ID, DESCRICAO_COMBUSTIVEL, categoriaDespesa);
     }

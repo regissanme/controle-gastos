@@ -4,6 +4,8 @@ import br.com.rsanme.controlegastos.models.CategoriaDespesa;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 /**
  * Projeto: controle-gastos
  * Desenvolvedor: Reginaldo Santos de Medeiros (regissanme)
@@ -12,4 +14,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface CategoriaDespesaRepository extends JpaRepository<CategoriaDespesa, Long> {
+    Optional<CategoriaDespesa> findByDescricao(String descricao);
 }
