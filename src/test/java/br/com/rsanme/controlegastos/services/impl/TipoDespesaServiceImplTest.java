@@ -86,9 +86,9 @@ class TipoDespesaServiceImplTest {
     @Test
     void whenFindByIdThenThrowsNotFound() {
 
-        assertThatThrownBy(()-> service.findById(ID))
+        assertThatThrownBy(() -> service.findById(ID))
                 .hasMessage(ERRO_NOT_FOUND)
-                        .isInstanceOf(EntityNotFoundException.class);
+                .isInstanceOf(EntityNotFoundException.class);
 
         verify(repository, times(1))
                 .findById(anyLong());
@@ -113,13 +113,34 @@ class TipoDespesaServiceImplTest {
 
     @Test
     void whenUpdateThenReturnSuccess() {
+
+        when(repository.findById(anyLong())).thenReturn(Optional.of(tipoDespesa));
+        when(repository.findByDescricao(anyString())).thenReturn(Optional.of(tipoDespesa));
+        when(repository.save(any())).thenReturn(tipoDespesa);
+
+        TipoDespesa response = service.update(tipoDespesa);
+
+        assertNotNull(response);
+        assertEquals(ID, response.getId());
+        assertEquals(DESCRICAO_COMBUSTIVEL, response.getDescricao());
+        assertEquals(DESCRICAO_TRANSPORTE, response.getCategoriaDespesa().getDescricao());
+
+        verify(repository, times(1))
+                .save(any());
     }
 
     @Test
     void whenDeleteThenSuccess() {
+
+        when(repository.findById(anyLong())).thenReturn(Optional.of(tipoDespesa));
+
+        service.delete(ID);
+
+        verify(repository, times(1))
+                .findById(anyLong());
     }
 
-    private void createInstances(){
+    private void createInstances() {
         categoriaDespesa = new CategoriaDespesa();
         categoriaDespesa.setId(1L);
         categoriaDespesa.setDescricao(DESCRICAO_TRANSPORTE);
