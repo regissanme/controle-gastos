@@ -55,6 +55,7 @@ public class TipoDespesaServiceImpl implements ITipoDespesaService<TipoDespesa> 
     @Override
     public TipoDespesa update(TipoDespesa tipoDespesa) {
         findById(tipoDespesa.getId());
+
         findByDescricao(tipoDespesa);
 
         return repository.save(tipoDespesa);
