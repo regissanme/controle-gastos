@@ -3,12 +3,23 @@ package br.com.rsanme.controlegastos.services.impl;
 import br.com.rsanme.controlegastos.models.CategoriaDespesa;
 import br.com.rsanme.controlegastos.models.TipoDespesa;
 import br.com.rsanme.controlegastos.repositories.TipoDespesaRepository;
+import jakarta.persistence.EntityNotFoundException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.*;
 
 /**
  * Projeto: controle-gastos
@@ -41,11 +52,46 @@ class TipoDespesaServiceImplTest {
     }
 
     @Test
-    void findAll() {
+    void whenFindAllThenReturnList() {
+        when(repository.findAll()).thenReturn(List.of(tipoDespesa));
+
+        List<TipoDespesa> listResponse = service.findAll();
+
+        assertNotNull(listResponse);
+        assertEquals(1, listResponse.size());
+        assertEquals(TipoDespesa.class, listResponse.get(0).getClass());
+        assertEquals(DESCRICAO_COMBUSTIVEL, listResponse.get(0).getDescricao());
+        assertEquals(DESCRICAO_TRANSPORTE, listResponse.get(0).getCategoriaDespesa().getDescricao());
+
+        verify(repository, times(1))
+                .findAll();
     }
 
     @Test
-    void findById() {
+    void whenFindByIdThenReturnInstance() {
+
+        when(repository.findById(anyLong())).thenReturn(Optional.of(tipoDespesa));
+
+        TipoDespesa response = service.findById(ID);
+
+        assertNotNull(response);
+        assertEquals(ID, response.getId());
+        assertEquals(DESCRICAO_COMBUSTIVEL, response.getDescricao());
+        assertEquals(DESCRICAO_TRANSPORTE, response.getCategoriaDespesa().getDescricao());
+
+        verify(repository, times(1))
+                .findById(anyLong());
+    }
+
+    @Test
+    void whenFindByIdThenThrowsNotFound() {
+
+        assertThatThrownBy(()-> service.findById(ID))
+                .hasMessage(ERRO_NOT_FOUND)
+                        .isInstanceOf(EntityNotFoundException.class);
+
+        verify(repository, times(1))
+                .findById(anyLong());
     }
 
     @Test
