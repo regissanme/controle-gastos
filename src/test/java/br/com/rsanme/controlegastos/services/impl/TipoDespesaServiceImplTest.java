@@ -95,15 +95,28 @@ class TipoDespesaServiceImplTest {
     }
 
     @Test
-    void create() {
+    void whenCreateThenReturnSuccess() {
+        TipoDespesa toSave = new TipoDespesa(null, DESCRICAO_COMBUSTIVEL, categoriaDespesa);
+
+        when(repository.save(toSave)).thenReturn(tipoDespesa);
+
+        TipoDespesa response = service.create(toSave);
+
+        assertNotNull(response);
+        assertEquals(ID, response.getId());
+        assertEquals(DESCRICAO_COMBUSTIVEL, response.getDescricao());
+        assertEquals(DESCRICAO_TRANSPORTE, response.getCategoriaDespesa().getDescricao());
+
+        verify(repository, times(1))
+                .save(any());
     }
 
     @Test
-    void update() {
+    void whenUpdateThenReturnSuccess() {
     }
 
     @Test
-    void delete() {
+    void whenDeleteThenSuccess() {
     }
 
     private void createInstances(){
