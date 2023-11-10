@@ -16,14 +16,19 @@ import java.util.Objects;
  * Hora: 15:00
  */
 @Entity
-@Getter @Setter @AllArgsConstructor @NoArgsConstructor
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Despesa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String mes;
+
 
     private BigDecimal valor;
 

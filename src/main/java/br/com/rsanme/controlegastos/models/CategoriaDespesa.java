@@ -16,7 +16,10 @@ import java.util.Objects;
  * Hora: 14:34
  */
 @Entity
-@Getter @Setter @AllArgsConstructor @NoArgsConstructor
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class CategoriaDespesa {
 
     @Id
