@@ -41,6 +41,7 @@ public class DespesaServiceImpl implements IDespesaService<Despesa> {
 
     @Override
     public Despesa update(Despesa despesa) {
+        findById(despesa.getId());
         return repository.save(despesa);
     }
 
