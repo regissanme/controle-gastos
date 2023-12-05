@@ -1,13 +1,12 @@
 package br.com.rsanme.controlegastos.services.impl;
 
+import br.com.rsanme.controlegastos.exceptions.CustomEntityAlreadyExistsException;
+import br.com.rsanme.controlegastos.exceptions.CustomEntityNotFoundException;
 import br.com.rsanme.controlegastos.models.TipoPagamento;
 import br.com.rsanme.controlegastos.repositories.TipoPagamentoRepository;
 import br.com.rsanme.controlegastos.services.ITipoPagamentoService;
-import jakarta.persistence.EntityExistsException;
-import jakarta.persistence.EntityNotFoundException;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Projeto: controle-gastos
@@ -32,7 +31,7 @@ public class TipoPagamentoServiceImpl implements ITipoPagamentoService<TipoPagam
     public TipoPagamento findById(Long id) {
         return tipoPagamentoRepository.findById(id)
                 .orElseThrow(
-                        () -> new EntityNotFoundException(
+                        () -> new CustomEntityNotFoundException(
                                 String.format("Tipo de Pagamento com Id %s não encontrado!", id))
                 );
     }
@@ -62,7 +61,7 @@ public class TipoPagamentoServiceImpl implements ITipoPagamentoService<TipoPagam
         var byTipo = tipoPagamentoRepository.findByTipo(tipoPagamento.getTipo());
 
         if (byTipo.isPresent() && !byTipo.get().getId().equals(tipoPagamento.getId())) {
-            throw new EntityExistsException(
+            throw new CustomEntityAlreadyExistsException(
                     String.format("Um Tipo de Pagamento com o tipo %s já existe!", tipoPagamento.getTipo())
             );
         }

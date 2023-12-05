@@ -1,5 +1,6 @@
 package br.com.rsanme.controlegastos.exceptions.handlers;
 
+import br.com.rsanme.controlegastos.exceptions.BusinessException;
 import br.com.rsanme.controlegastos.exceptions.CustomEntityAlreadyExistsException;
 import br.com.rsanme.controlegastos.exceptions.CustomEntityNotFoundException;
 import br.com.rsanme.controlegastos.exceptions.CustomUsernameNotFoundException;
@@ -88,6 +89,22 @@ public class CustomApiExceptionHandler extends ResponseEntityExceptionHandler {
             CustomUsernameNotFoundException ex, WebRequest request) {
 
         HttpStatus status = HttpStatus.NOT_FOUND;
+
+        CustomErrorResponse error = CustomErrorResponse.builder()
+                .status(status.value())
+                .timestamp(LocalDateTime.now())
+                .title(ex.getMessage())
+                .build();
+
+        return super.handleExceptionInternal(ex, error, new HttpHeaders(), status, request);
+    }
+
+    @ExceptionHandler(BusinessException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ResponseEntity<Object> handleBusinessException(
+            BusinessException ex, WebRequest request) {
+
+        HttpStatus status = HttpStatus.BAD_REQUEST;
 
         CustomErrorResponse error = CustomErrorResponse.builder()
                 .status(status.value())

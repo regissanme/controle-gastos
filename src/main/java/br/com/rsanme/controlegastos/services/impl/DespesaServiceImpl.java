@@ -1,9 +1,9 @@
 package br.com.rsanme.controlegastos.services.impl;
 
+import br.com.rsanme.controlegastos.exceptions.CustomEntityNotFoundException;
 import br.com.rsanme.controlegastos.models.Despesa;
 import br.com.rsanme.controlegastos.repositories.DespesaRepository;
 import br.com.rsanme.controlegastos.services.IDespesaService;
-import jakarta.persistence.EntityNotFoundException;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ public class DespesaServiceImpl implements IDespesaService<Despesa> {
     public Despesa findById(Long id) {
         return repository.findById(id)
                 .orElseThrow(() ->
-                        new EntityNotFoundException("Despesa não encontrada com Id: " + id)
+                        new CustomEntityNotFoundException("Despesa não encontrada com Id: " + id)
                 );
     }
 

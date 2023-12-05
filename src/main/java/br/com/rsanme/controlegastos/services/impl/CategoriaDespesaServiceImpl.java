@@ -1,10 +1,10 @@
 package br.com.rsanme.controlegastos.services.impl;
 
+import br.com.rsanme.controlegastos.exceptions.CustomEntityAlreadyExistsException;
+import br.com.rsanme.controlegastos.exceptions.CustomEntityNotFoundException;
 import br.com.rsanme.controlegastos.models.CategoriaDespesa;
 import br.com.rsanme.controlegastos.repositories.CategoriaDespesaRepository;
 import br.com.rsanme.controlegastos.services.ICategoriaDespesaService;
-import jakarta.persistence.EntityExistsException;
-import jakarta.persistence.EntityNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +32,7 @@ public class CategoriaDespesaServiceImpl implements ICategoriaDespesaService<Cat
     public CategoriaDespesa findById(Long id) {
         return repository.findById(id)
                 .orElseThrow(
-                        () -> new EntityNotFoundException(
+                        () -> new CustomEntityNotFoundException(
                                 String.format("Categoria da Despesa com Id %s não encontrada!", id))
                 );
     }
@@ -64,7 +64,7 @@ public class CategoriaDespesaServiceImpl implements ICategoriaDespesaService<Cat
         Optional<CategoriaDespesa> byDescricao = repository.findByDescricao(categoriaDespesa.getDescricao());
 
         if (byDescricao.isPresent() && !byDescricao.get().getId().equals(categoriaDespesa.getId())) {
-            throw new EntityExistsException(
+            throw new CustomEntityAlreadyExistsException(
                     String.format(
                             "Uma Categoria de Despesa com a descrição %s já existe!",
                             categoriaDespesa.getDescricao()

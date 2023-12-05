@@ -6,8 +6,8 @@ package br.com.rsanme.controlegastos.exceptions;
  * Data: 04/12/2023
  * Hora: 23:08
  */
-public class BusinessExceptions extends RuntimeException {
-    public BusinessExceptions(String message) {
+public class BusinessException extends RuntimeException {
+    public BusinessException(String message) {
         super(message);
     }
 }

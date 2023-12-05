@@ -1,11 +1,11 @@
 package br.com.rsanme.controlegastos.services.impl;
 
+import br.com.rsanme.controlegastos.exceptions.BusinessException;
+import br.com.rsanme.controlegastos.exceptions.CustomEntityAlreadyExistsException;
+import br.com.rsanme.controlegastos.exceptions.CustomEntityNotFoundException;
 import br.com.rsanme.controlegastos.models.TipoDespesa;
 import br.com.rsanme.controlegastos.repositories.TipoDespesaRepository;
 import br.com.rsanme.controlegastos.services.ITipoDespesaService;
-import jakarta.persistence.EntityExistsException;
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.ConstraintDefinitionException;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +34,7 @@ public class TipoDespesaServiceImpl implements ITipoDespesaService<TipoDespesa> 
     public TipoDespesa findById(Long id) {
         return repository.findById(id)
                 .orElseThrow(
-                        () -> new EntityNotFoundException(
+                        () -> new CustomEntityNotFoundException(
                                 String.format("Tipo de Despesa com Id %s não encontrado!", id))
                 );
     }
@@ -42,7 +42,7 @@ public class TipoDespesaServiceImpl implements ITipoDespesaService<TipoDespesa> 
     @Override
     public TipoDespesa create(TipoDespesa tipoDespesa) {
         if (tipoDespesa.getCategoriaDespesa() == null) {
-            throw new ConstraintDefinitionException(
+            throw new BusinessException(
                     "Dados inválidos!"
             );
         }
@@ -73,7 +73,7 @@ public class TipoDespesaServiceImpl implements ITipoDespesaService<TipoDespesa> 
         Optional<TipoDespesa> byDescricao = repository.findByDescricao(tipoDespesa.getDescricao());
 
         if (byDescricao.isPresent() && !byDescricao.get().getId().equals(tipoDespesa.getId())) {
-            throw new EntityExistsException(
+            throw new CustomEntityAlreadyExistsException(
                     String.format(
                             "Um Tipo de Despesa com a descrição %s já existe!", tipoDespesa.getDescricao()
                     )

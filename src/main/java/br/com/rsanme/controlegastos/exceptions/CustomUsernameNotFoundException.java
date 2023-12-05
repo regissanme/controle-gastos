@@ -6,7 +6,7 @@ package br.com.rsanme.controlegastos.exceptions;
  * Data: 04/12/2023
  * Hora: 23:15
  */
-public class CustomUsernameNotFoundException extends BusinessExceptions {
+public class CustomUsernameNotFoundException extends BusinessException {
     public CustomUsernameNotFoundException(String message) {
         super(message);
     }
