@@ -1,5 +1,7 @@
 package br.com.rsanme.controlegastos.services.impl;
 
+import br.com.rsanme.controlegastos.exceptions.CustomEntityAlreadyExistsException;
+import br.com.rsanme.controlegastos.exceptions.CustomEntityNotFoundException;
 import br.com.rsanme.controlegastos.models.TipoPagamento;
 import br.com.rsanme.controlegastos.repositories.TipoPagamentoRepository;
 import jakarta.persistence.EntityExistsException;
@@ -15,8 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
@@ -35,7 +36,6 @@ class TipoPagamentoServiceImplTest {
     private TipoPagamentoServiceImpl service;
 
     private TipoPagamento tipoPagamento;
-    private Optional<TipoPagamento> optionalTipoPagamento;
 
     @Mock
     private TipoPagamentoRepository repository;
@@ -59,14 +59,14 @@ class TipoPagamentoServiceImplTest {
         assertEquals(TipoPagamento.class, response.get(0).getClass());
         assertEquals(tipoPagamento, response.get(0));
 
-        verify(repository, times(1))
+        verify(repository)
                 .findAll();
     }
 
     @Test
     void whenFindByIdThenSuccess() {
 
-        when(repository.findById(anyLong())).thenReturn(optionalTipoPagamento);
+        when(repository.findById(anyLong())).thenReturn(Optional.of(tipoPagamento));
 
         TipoPagamento response = service.findById(ID);
 
@@ -75,7 +75,7 @@ class TipoPagamentoServiceImplTest {
         assertEquals(TIPO_PAGAMENTO_DINHEIRO, response.getTipo());
         assertEquals(ID, response.getId());
 
-        verify(repository, times(1))
+        verify(repository)
                 .findById(anyLong());
     }
 
@@ -86,28 +86,34 @@ class TipoPagamentoServiceImplTest {
 
         assertThatThrownBy(() -> service.findById(ID))
                 .hasMessage(errorMessage)
-                .isInstanceOf(EntityNotFoundException.class);
+                .isInstanceOf(CustomEntityNotFoundException.class);
 
-        verify(repository, times(1))
+        verify(repository)
                 .findById(anyLong());
     }
 
     @Test
     void whenCreateThenReturnSuccess() {
-        TipoPagamento paraSalvar = new TipoPagamento();
-        paraSalvar.setTipo(TIPO_PAGAMENTO_DINHEIRO);
+        TipoPagamento toSave = new TipoPagamento();
+        toSave.setTipo(TIPO_PAGAMENTO_DINHEIRO);
 
         when(repository.findByTipo(anyString())).thenReturn(Optional.empty());
         when(repository.save(any())).thenReturn(tipoPagamento);
 
-        TipoPagamento response = service.create(paraSalvar);
+        TipoPagamento response = service.create(toSave);
 
         assertNotNull(response);
         assertEquals(TipoPagamento.class, response.getClass());
         assertEquals(tipoPagamento.getId(), response.getId());
         assertEquals(tipoPagamento.getTipo(), response.getTipo());
 
-        verify(repository, times(1))
+        assertEquals(tipoPagamento.hashCode(), response.hashCode());
+        assertTrue(tipoPagamento.equals(response));
+        assertFalse(tipoPagamento.equals(null));
+        assertFalse(tipoPagamento.equals(toSave));
+        assertTrue(tipoPagamento.toString().contains("TipoPagamento"));
+
+        verify(repository)
                 .save(any());
     }
 
@@ -120,13 +126,13 @@ class TipoPagamentoServiceImplTest {
         String errorMessage = String.format(
                 "Um Tipo de Pagamento com o tipo %s já existe!", TIPO_PAGAMENTO_DINHEIRO);
 
-        when(repository.findByTipo(anyString())).thenReturn(optionalTipoPagamento);
+        when(repository.findByTipo(anyString())).thenReturn(Optional.of(tipoPagamento));
 
         assertThatThrownBy(() -> service.create(paraSalvar))
                 .hasMessage(errorMessage)
-                .isInstanceOf(EntityExistsException.class);
+                .isInstanceOf(CustomEntityAlreadyExistsException.class);
 
-        verify(repository, times(1))
+        verify(repository)
                 .findByTipo(TIPO_PAGAMENTO_DINHEIRO);
 
         verify(repository, never())
@@ -136,8 +142,8 @@ class TipoPagamentoServiceImplTest {
     @Test
     void whenUpdateThenReturnSuccess() {
 
-        when(repository.findById(anyLong())).thenReturn(optionalTipoPagamento);
-        when(repository.findByTipo(anyString())).thenReturn(optionalTipoPagamento);
+        when(repository.findById(anyLong())).thenReturn(Optional.of(tipoPagamento));
+        when(repository.findByTipo(anyString())).thenReturn(Optional.of(tipoPagamento));
         when(repository.save(any())).thenReturn(tipoPagamento);
 
         TipoPagamento response = service.update(tipoPagamento);
@@ -147,7 +153,7 @@ class TipoPagamentoServiceImplTest {
         assertEquals(tipoPagamento.getId(), response.getId());
         assertEquals(tipoPagamento.getTipo(), response.getTipo());
 
-        verify(repository, times(1))
+        verify(repository)
                 .save(any());
     }
 
@@ -158,9 +164,9 @@ class TipoPagamentoServiceImplTest {
 
         assertThatThrownBy(() -> service.update(tipoPagamento))
                 .hasMessage(errorMessage)
-                .isInstanceOf(EntityNotFoundException.class);
+                .isInstanceOf(CustomEntityNotFoundException.class);
 
-        verify(repository, times(1))
+        verify(repository)
                 .findById(anyLong());
 
         verify(repository, never())
@@ -177,14 +183,14 @@ class TipoPagamentoServiceImplTest {
         String errorMessage = String.format(
                 "Um Tipo de Pagamento com o tipo %s já existe!", TIPO_PAGAMENTO_DINHEIRO);
 
-        when(repository.findById(anyLong())).thenReturn(optionalTipoPagamento);
-        when(repository.findByTipo(anyString())).thenReturn(optionalTipoPagamento);
+        when(repository.findById(anyLong())).thenReturn(Optional.of(tipoPagamento));
+        when(repository.findByTipo(anyString())).thenReturn(Optional.of(tipoPagamento));
 
         assertThatThrownBy(() -> service.update(paraAtualizar))
                 .hasMessage(errorMessage)
-                .isInstanceOf(EntityExistsException.class);
+                .isInstanceOf(CustomEntityAlreadyExistsException.class);
 
-        verify(repository, times(1))
+        verify(repository)
                 .findByTipo(TIPO_PAGAMENTO_DINHEIRO);
 
         verify(repository, never())
@@ -194,14 +200,14 @@ class TipoPagamentoServiceImplTest {
     @Test
     void whenDeleteThenSuccess() {
 
-        when(repository.findById(anyLong())).thenReturn(optionalTipoPagamento);
+        when(repository.findById(anyLong())).thenReturn(Optional.of(tipoPagamento));
 
         service.delete(ID);
 
-        verify(repository, times(1))
+        verify(repository)
                 .findById(anyLong());
 
-        verify(repository, times(1))
+        verify(repository)
                 .deleteById(anyLong());
     }
 
@@ -212,9 +218,9 @@ class TipoPagamentoServiceImplTest {
 
         assertThatThrownBy(() -> service.delete(ID))
                 .hasMessage(errorMessage)
-                .isInstanceOf(EntityNotFoundException.class);
+                .isInstanceOf(CustomEntityNotFoundException.class);
 
-        verify(repository, times(1))
+        verify(repository)
                 .findById(anyLong());
 
         verify(repository, never())
@@ -223,6 +229,5 @@ class TipoPagamentoServiceImplTest {
 
     private void createInstances() {
         tipoPagamento = new TipoPagamento(1L, TIPO_PAGAMENTO_DINHEIRO);
-        optionalTipoPagamento = Optional.of(tipoPagamento);
     }
 }

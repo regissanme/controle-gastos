@@ -3,7 +3,9 @@ package br.com.rsanme.controlegastos.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,8 @@ import java.util.Objects;
  * Hora: 14:34
  */
 @Entity
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class CategoriaDespesa {
@@ -29,38 +33,7 @@ public class CategoriaDespesa {
     private String descricao;
 
     @OneToMany(mappedBy = "categoriaDespesa")
-    private List<TipoDespesa> tiposDespesas;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public List<TipoDespesa> getTiposDespesas() {
-        return tiposDespesas;
-    }
-
-    public void setTiposDespesas(List<TipoDespesa> tiposDespesas) {
-        this.tiposDespesas = tiposDespesas;
-    }
-
-    public void addTipoDespesa(TipoDespesa tipoDespesa) {
-        if (tiposDespesas == null) {
-            this.tiposDespesas = new ArrayList<>();
-        }
-        tiposDespesas.add(tipoDespesa);
-    }
+    private List<TipoDespesa> tiposDespesas = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

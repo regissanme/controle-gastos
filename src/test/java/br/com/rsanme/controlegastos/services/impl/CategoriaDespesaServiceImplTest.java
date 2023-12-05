@@ -1,10 +1,10 @@
 package br.com.rsanme.controlegastos.services.impl;
 
+import br.com.rsanme.controlegastos.exceptions.CustomEntityAlreadyExistsException;
+import br.com.rsanme.controlegastos.exceptions.CustomEntityNotFoundException;
 import br.com.rsanme.controlegastos.models.CategoriaDespesa;
 import br.com.rsanme.controlegastos.models.TipoDespesa;
 import br.com.rsanme.controlegastos.repositories.CategoriaDespesaRepository;
-import jakarta.persistence.EntityExistsException;
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,8 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
@@ -67,23 +66,23 @@ class CategoriaDespesaServiceImplTest {
         assertEquals(TIPO_DESC_COMBUSTIVEL, listResponse.get(0).getTiposDespesas().get(0).getDescricao());
         assertNotNull(listResponse.get(0).getTiposDespesas());
 
-        verify(repository, times(1))
+        verify(repository)
                 .findAll();
     }
 
     @Test
-    void whenFindByIdThenReturnInstance() {
+    void whenFindByIdThrowsNotFound() {
 
         assertThatThrownBy(() -> service.findById(ID))
                 .hasMessage(ERRO_NOT_FOUND)
-                .isInstanceOf(EntityNotFoundException.class);
+                .isInstanceOf(CustomEntityNotFoundException.class);
 
-        verify(repository, times(1))
+        verify(repository)
                 .findById(anyLong());
     }
 
     @Test
-    void whenFindByIdThenThrowsNotFound() {
+    void whenFindByIdThenReturnInstance() {
 
         when(repository.findById(anyLong())).thenReturn(Optional.of(categoriaDespesa));
 
@@ -94,7 +93,7 @@ class CategoriaDespesaServiceImplTest {
         assertEquals(CATEGORIA_DESC_TRANSPORTE, response.getDescricao());
         assertEquals(TIPO_DESC_COMBUSTIVEL, response.getTiposDespesas().get(0).getDescricao());
 
-        verify(repository, times(1))
+        verify(repository)
                 .findById(anyLong());
     }
 
@@ -111,7 +110,13 @@ class CategoriaDespesaServiceImplTest {
         assertEquals(CATEGORIA_DESC_TRANSPORTE, response.getDescricao());
         assertEquals(TIPO_DESC_COMBUSTIVEL, response.getTiposDespesas().get(0).getDescricao());
 
-        verify(repository, times(1))
+        assertEquals(categoriaDespesa.hashCode(), response.hashCode());
+        assertTrue(categoriaDespesa.equals(response));
+        assertFalse(categoriaDespesa.equals(null));
+        assertFalse(categoriaDespesa.equals(toSave));
+        assertTrue(categoriaDespesa.toString().contains("CategoriaDespesa"));
+
+        verify(repository)
                 .save(any());
     }
 
@@ -123,9 +128,9 @@ class CategoriaDespesaServiceImplTest {
 
         assertThatThrownBy(() -> service.create(toSave))
                 .hasMessage(ERRO_ALREADY_EXISTS)
-                .isInstanceOf(EntityExistsException.class);
+                .isInstanceOf(CustomEntityAlreadyExistsException.class);
 
-        verify(repository, times(1))
+        verify(repository)
                 .findByDescricao(anyString());
 
         verify(repository, never())
@@ -146,7 +151,7 @@ class CategoriaDespesaServiceImplTest {
         assertEquals(CATEGORIA_DESC_TRANSPORTE, response.getDescricao());
         assertEquals(TIPO_DESC_COMBUSTIVEL, response.getTiposDespesas().get(0).getDescricao());
 
-        verify(repository, times(1))
+        verify(repository)
                 .save(any());
     }
 
@@ -155,9 +160,9 @@ class CategoriaDespesaServiceImplTest {
 
         assertThatThrownBy(() -> service.update(categoriaDespesa))
                 .hasMessage(ERRO_NOT_FOUND)
-                .isInstanceOf(EntityNotFoundException.class);
+                .isInstanceOf(CustomEntityNotFoundException.class);
 
-        verify(repository, times(1))
+        verify(repository)
                 .findById(anyLong());
 
         verify(repository, never())
@@ -173,9 +178,9 @@ class CategoriaDespesaServiceImplTest {
 
         assertThatThrownBy(() -> service.update(toUpdate))
                 .hasMessage(ERRO_ALREADY_EXISTS)
-                .isInstanceOf(EntityExistsException.class);
+                .isInstanceOf(CustomEntityAlreadyExistsException.class);
 
-        verify(repository, times(1))
+        verify(repository)
                 .findByDescricao(anyString());
 
         verify(repository, never())
@@ -189,10 +194,10 @@ class CategoriaDespesaServiceImplTest {
 
         service.delete(ID);
 
-        verify(repository, times(1))
+        verify(repository)
                 .findById(anyLong());
 
-        verify(repository, times(1))
+        verify(repository)
                 .deleteById(anyLong());
     }
 
@@ -201,9 +206,9 @@ class CategoriaDespesaServiceImplTest {
 
         assertThatThrownBy(() -> service.delete(ID))
                 .hasMessage(ERRO_NOT_FOUND)
-                .isInstanceOf(EntityNotFoundException.class);
+                .isInstanceOf(CustomEntityNotFoundException.class);
 
-        verify(repository, times(1))
+        verify(repository)
                 .findById(anyLong());
 
         verify(repository, never())

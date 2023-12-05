@@ -1,11 +1,11 @@
 package br.com.rsanme.controlegastos.services.impl;
 
+import br.com.rsanme.controlegastos.exceptions.BusinessException;
+import br.com.rsanme.controlegastos.exceptions.CustomEntityAlreadyExistsException;
+import br.com.rsanme.controlegastos.exceptions.CustomEntityNotFoundException;
 import br.com.rsanme.controlegastos.models.CategoriaDespesa;
 import br.com.rsanme.controlegastos.models.TipoDespesa;
 import br.com.rsanme.controlegastos.repositories.TipoDespesaRepository;
-import jakarta.persistence.EntityExistsException;
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.ConstraintDefinitionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,8 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
@@ -90,7 +89,7 @@ class TipoDespesaServiceImplTest {
 
         assertThatThrownBy(() -> service.findById(ID))
                 .hasMessage(ERRO_NOT_FOUND)
-                .isInstanceOf(EntityNotFoundException.class);
+                .isInstanceOf(CustomEntityNotFoundException.class);
 
         verify(repository, times(1))
                 .findById(anyLong());
@@ -108,8 +107,13 @@ class TipoDespesaServiceImplTest {
         assertEquals(ID, response.getId());
         assertEquals(DESCRICAO_COMBUSTIVEL, response.getDescricao());
         assertEquals(DESCRICAO_TRANSPORTE, response.getCategoriaDespesa().getDescricao());
+        assertEquals(tipoDespesa.hashCode(), response.hashCode());
+        assertTrue(tipoDespesa.equals(response));
+        assertFalse(tipoDespesa.equals(null));
+        assertFalse(tipoDespesa.equals(toSave));
+        assertTrue(tipoDespesa.toString().contains("TipoDespesa"));
 
-        verify(repository, times(1))
+        verify(repository)
                 .save(any());
     }
 
@@ -121,9 +125,9 @@ class TipoDespesaServiceImplTest {
 
         assertThatThrownBy(() -> service.create(toSave))
                 .hasMessage(ERRO_ALREADY_EXISTS)
-                .isInstanceOf(EntityExistsException.class);
+                .isInstanceOf(CustomEntityAlreadyExistsException.class);
 
-        verify(repository, times(1))
+        verify(repository)
                 .findByDescricao(anyString());
 
         verify(repository, never())
@@ -136,7 +140,7 @@ class TipoDespesaServiceImplTest {
 
         assertThatThrownBy(() -> service.create(toSave))
                 .hasMessage(ERRO_INVALID_DATA)
-                .isInstanceOf(ConstraintDefinitionException.class);
+                .isInstanceOf(BusinessException.class);
 
         verify(repository, never())
                 .findByDescricao(anyString());
@@ -159,7 +163,7 @@ class TipoDespesaServiceImplTest {
         assertEquals(DESCRICAO_COMBUSTIVEL, response.getDescricao());
         assertEquals(DESCRICAO_TRANSPORTE, response.getCategoriaDespesa().getDescricao());
 
-        verify(repository, times(1))
+        verify(repository)
                 .save(any());
     }
 
@@ -168,9 +172,9 @@ class TipoDespesaServiceImplTest {
 
         assertThatThrownBy(() -> service.update(tipoDespesa))
                 .hasMessage(ERRO_NOT_FOUND)
-                .isInstanceOf(EntityNotFoundException.class);
+                .isInstanceOf(CustomEntityNotFoundException.class);
 
-        verify(repository, times(1))
+        verify(repository)
                 .findById(anyLong());
 
         verify(repository, never())
@@ -186,9 +190,9 @@ class TipoDespesaServiceImplTest {
 
         assertThatThrownBy(() -> service.update(toUpdate))
                 .hasMessage(ERRO_ALREADY_EXISTS)
-                .isInstanceOf(EntityExistsException.class);
+                .isInstanceOf(CustomEntityAlreadyExistsException.class);
 
-        verify(repository, times(1))
+        verify(repository)
                 .findByDescricao(anyString());
 
         verify(repository, never())
@@ -201,7 +205,7 @@ class TipoDespesaServiceImplTest {
 
         service.delete(ID);
 
-        verify(repository, times(1))
+        verify(repository)
                 .findById(anyLong());
     }
 
@@ -210,9 +214,9 @@ class TipoDespesaServiceImplTest {
 
         assertThatThrownBy(() -> service.delete(ID))
                 .hasMessage(ERRO_NOT_FOUND)
-                .isInstanceOf(EntityNotFoundException.class);
+                .isInstanceOf(CustomEntityNotFoundException.class);
 
-        verify(repository, times(1))
+        verify(repository)
                 .findById(anyLong());
 
         verify(repository, never())
@@ -225,6 +229,9 @@ class TipoDespesaServiceImplTest {
         categoriaDespesa.setDescricao(DESCRICAO_TRANSPORTE);
         categoriaDespesa.setTiposDespesas(null);
 
-        tipoDespesa = new TipoDespesa(ID, DESCRICAO_COMBUSTIVEL, categoriaDespesa);
+        tipoDespesa = new TipoDespesa();
+        tipoDespesa.setId(ID);
+        tipoDespesa.setDescricao(DESCRICAO_COMBUSTIVEL);
+        tipoDespesa.setCategoriaDespesa(categoriaDespesa);
     }
 }

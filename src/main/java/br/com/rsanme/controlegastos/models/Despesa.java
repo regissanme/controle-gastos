@@ -32,6 +32,8 @@ public class Despesa {
 
     private BigDecimal valor;
 
+    private String descricao;
+
     @OneToOne
     private TipoPagamento tipoPagamento;
 

@@ -49,7 +49,7 @@ public class TipoDespesa {
         return "TipoDespesa{" +
                 "id=" + id +
                 ", descricao='" + descricao + '\'' +
-                ", categoriaDespesa=" + categoriaDespesa +
+                ", categoriaDespesa=" + categoriaDespesa.getId() +
                 '}';
     }
 }
