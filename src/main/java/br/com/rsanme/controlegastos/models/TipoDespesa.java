@@ -1,5 +1,6 @@
 package br.com.rsanme.controlegastos.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -26,6 +27,7 @@ public class TipoDespesa {
     @Column(unique = true, nullable = false)
     private String descricao;
 
+    @JsonIgnore
     @NotNull(message = "A categoria da despesa é obrigatória!")
     @ManyToOne
     @JoinColumn(name = "categoria_despesa_id")
