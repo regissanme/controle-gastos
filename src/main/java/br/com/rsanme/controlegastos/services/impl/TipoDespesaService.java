@@ -5,7 +5,7 @@ import br.com.rsanme.controlegastos.exceptions.CustomEntityAlreadyExistsExceptio
 import br.com.rsanme.controlegastos.exceptions.CustomEntityNotFoundException;
 import br.com.rsanme.controlegastos.models.TipoDespesa;
 import br.com.rsanme.controlegastos.repositories.TipoDespesaRepository;
-import br.com.rsanme.controlegastos.services.ITipoDespesaService;
+import br.com.rsanme.controlegastos.services.ICrudService;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,11 +16,11 @@ import java.util.Optional;
  * Data: 10/11/2023
  * Hora: 10:07
  */
-public class TipoDespesaServiceImpl implements ITipoDespesaService<TipoDespesa> {
+public class TipoDespesaService implements ICrudService<TipoDespesa> {
 
     private final TipoDespesaRepository repository;
 
-    public TipoDespesaServiceImpl(TipoDespesaRepository repository) {
+    public TipoDespesaService(TipoDespesaRepository repository) {
         this.repository = repository;
     }
 

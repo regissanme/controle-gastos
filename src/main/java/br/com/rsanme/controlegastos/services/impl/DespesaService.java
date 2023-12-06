@@ -3,7 +3,7 @@ package br.com.rsanme.controlegastos.services.impl;
 import br.com.rsanme.controlegastos.exceptions.CustomEntityNotFoundException;
 import br.com.rsanme.controlegastos.models.Despesa;
 import br.com.rsanme.controlegastos.repositories.DespesaRepository;
-import br.com.rsanme.controlegastos.services.IDespesaService;
+import br.com.rsanme.controlegastos.services.ICrudService;
 
 import java.util.List;
 
@@ -13,16 +13,16 @@ import java.util.List;
  * Data: 04/12/2023
  * Hora: 22:43
  */
-public class DespesaServiceImpl implements IDespesaService<Despesa> {
+public class DespesaService implements ICrudService<Despesa> {
 
     private final DespesaRepository repository;
 
-    public DespesaServiceImpl(DespesaRepository repository) {
+    public DespesaService(DespesaRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public List<Despesa> findAll(Long id) {
+    public List<Despesa> findAll() {
         return repository.findAll();
     }
 

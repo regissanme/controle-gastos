@@ -4,7 +4,7 @@ import br.com.rsanme.controlegastos.exceptions.CustomEntityAlreadyExistsExceptio
 import br.com.rsanme.controlegastos.exceptions.CustomEntityNotFoundException;
 import br.com.rsanme.controlegastos.models.TipoPagamento;
 import br.com.rsanme.controlegastos.repositories.TipoPagamentoRepository;
-import br.com.rsanme.controlegastos.services.ITipoPagamentoService;
+import br.com.rsanme.controlegastos.services.ICrudService;
 
 import java.util.List;
 
@@ -14,11 +14,11 @@ import java.util.List;
  * Data: 09/11/2023
  * Hora: 16:52
  */
-public class TipoPagamentoServiceImpl implements ITipoPagamentoService<TipoPagamento> {
+public class TipoPagamentoService implements ICrudService<TipoPagamento> {
 
     private final TipoPagamentoRepository tipoPagamentoRepository;
 
-    public TipoPagamentoServiceImpl(TipoPagamentoRepository tipoPagamentoRepository) {
+    public TipoPagamentoService(TipoPagamentoRepository tipoPagamentoRepository) {
         this.tipoPagamentoRepository = tipoPagamentoRepository;
     }
 
