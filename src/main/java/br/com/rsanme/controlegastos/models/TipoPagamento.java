@@ -1,6 +1,7 @@
 package br.com.rsanme.controlegastos.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.util.Objects;
@@ -18,6 +19,7 @@ public class TipoPagamento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "A descrição do tipo é obrigatória!")
     @Column(unique = true, nullable = false)
     private String tipo;
 

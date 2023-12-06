@@ -64,7 +64,7 @@ public class TipoPagamentoService implements ICrudService<TipoPagamento> {
 
         if (byTipo.isPresent() && !byTipo.get().getId().equals(tipoPagamento.getId())) {
             throw new CustomEntityAlreadyExistsException(
-                    String.format("Um Tipo de Pagamento com o tipo %s já existe!", tipoPagamento.getTipo())
+                    String.format("Um Tipo de Pagamento do tipo %s já existe!", tipoPagamento.getTipo())
             );
         }
     }
