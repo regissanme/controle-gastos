@@ -1,10 +1,7 @@
 package br.com.rsanme.controlegastos.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Objects;
 
@@ -13,6 +10,7 @@ import java.util.Objects;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Table(name = "tipo_pagamento")
 public class TipoPagamento {
 
@@ -36,11 +34,4 @@ public class TipoPagamento {
         return Objects.hash(id);
     }
 
-    @Override
-    public String toString() {
-        return "TipoPagamento{" +
-                "id=" + id +
-                ", tipo='" + tipo + '\'' +
-                '}';
-    }
 }
