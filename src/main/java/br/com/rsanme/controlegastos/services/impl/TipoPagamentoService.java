@@ -5,6 +5,7 @@ import br.com.rsanme.controlegastos.exceptions.CustomEntityNotFoundException;
 import br.com.rsanme.controlegastos.models.TipoPagamento;
 import br.com.rsanme.controlegastos.repositories.TipoPagamentoRepository;
 import br.com.rsanme.controlegastos.services.ICrudService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import java.util.List;
  * Data: 09/11/2023
  * Hora: 16:52
  */
+@Service
 public class TipoPagamentoService implements ICrudService<TipoPagamento> {
 
     private final TipoPagamentoRepository tipoPagamentoRepository;

@@ -4,6 +4,7 @@ import br.com.rsanme.controlegastos.exceptions.CustomEntityNotFoundException;
 import br.com.rsanme.controlegastos.models.Despesa;
 import br.com.rsanme.controlegastos.repositories.DespesaRepository;
 import br.com.rsanme.controlegastos.services.ICrudService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
  * Data: 04/12/2023
  * Hora: 22:43
  */
+@Service
 public class DespesaService implements ICrudService<Despesa> {
 
     private final DespesaRepository repository;
