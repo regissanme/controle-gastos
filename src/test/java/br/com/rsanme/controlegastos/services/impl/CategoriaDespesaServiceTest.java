@@ -26,7 +26,7 @@ import static org.mockito.Mockito.*;
  * Hora: 17:42
  */
 @ExtendWith(MockitoExtension.class)
-class CategoriaDespesaServiceImplTest {
+class CategoriaDespesaServiceTest {
 
     public static final Long ID = 1L;
     public static final String CATEGORIA_DESC_TRANSPORTE = "Transporte";
@@ -37,7 +37,7 @@ class CategoriaDespesaServiceImplTest {
     public static final String ERRO_INVALID_DATA = "Dados inválidos!";
 
     @InjectMocks
-    private CategoriaDespesaServiceImpl service;
+    private CategoriaDespesaService service;
 
     @Mock
     private CategoriaDespesaRepository repository;

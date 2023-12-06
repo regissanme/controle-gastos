@@ -30,7 +30,7 @@ import static org.mockito.Mockito.*;
  * Hora: 15:26
  */
 @ExtendWith(MockitoExtension.class)
-class DespesaServiceImplTest {
+class DespesaServiceTest {
 
     public static final Long ID = 1L;
     public static final String MES = "JANEIRO";
@@ -39,7 +39,7 @@ class DespesaServiceImplTest {
     public static final String ERRO_NOT_FOUND = "Despesa não encontrada com Id: " + ID;
 
     @InjectMocks
-    private DespesaServiceImpl service;
+    private DespesaService service;
 
     @Mock
     private DespesaRepository repository;
@@ -56,7 +56,7 @@ class DespesaServiceImplTest {
 
         when(repository.findAll()).thenReturn(List.of(despesa));
 
-        List<Despesa> listResponse = service.findAll(ID);
+        List<Despesa> listResponse = service.findAll();
 
         assertNotNull(listResponse);
         assertEquals(1, listResponse.size());

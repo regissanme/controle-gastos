@@ -27,7 +27,7 @@ import static org.mockito.Mockito.*;
  * Hora: 10:52
  */
 @ExtendWith(MockitoExtension.class)
-class TipoDespesaServiceImplTest {
+class TipoDespesaServiceTest {
 
     public static final Long ID = 1L;
     public static final String DESCRICAO_TRANSPORTE = "Transporte";
@@ -38,7 +38,7 @@ class TipoDespesaServiceImplTest {
 
 
     @InjectMocks
-    private TipoDespesaServiceImpl service;
+    private TipoDespesaService service;
 
     @Mock
     private TipoDespesaRepository repository;

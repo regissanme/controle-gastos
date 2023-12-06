@@ -4,8 +4,6 @@ import br.com.rsanme.controlegastos.exceptions.CustomEntityAlreadyExistsExceptio
 import br.com.rsanme.controlegastos.exceptions.CustomEntityNotFoundException;
 import br.com.rsanme.controlegastos.models.TipoPagamento;
 import br.com.rsanme.controlegastos.repositories.TipoPagamentoRepository;
-import jakarta.persistence.EntityExistsException;
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,12 +26,12 @@ import static org.mockito.Mockito.*;
  * Hora: 17:11
  */
 @ExtendWith(MockitoExtension.class)
-class TipoPagamentoServiceImplTest {
+class TipoPagamentoServiceTest {
 
     public static final Long ID = 1L;
     public static final String TIPO_PAGAMENTO_DINHEIRO = "Dinheiro";
     @InjectMocks
-    private TipoPagamentoServiceImpl service;
+    private TipoPagamentoService service;
 
     private TipoPagamento tipoPagamento;
 
