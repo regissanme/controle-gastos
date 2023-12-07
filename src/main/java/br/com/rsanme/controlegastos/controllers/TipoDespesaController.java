@@ -16,7 +16,7 @@ import java.util.List;
  * Hora: 15:12
  */
 @RestController
-@RequestMapping("/api/v1/tipo-despesa")
+@RequestMapping("/api/v1/despesa/tipo")
 public class TipoDespesaController {
 
     private final TipoDespesaService service;
