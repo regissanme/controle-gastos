@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Objects;
 
@@ -29,8 +26,8 @@ public class TipoDespesa {
 
     @JsonIgnore
     @NotNull(message = "A categoria da despesa é obrigatória!")
-    @ManyToOne
-    @JoinColumn(name = "categoria_despesa_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "categoria_despesa_id", nullable = false)
     private CategoriaDespesa categoriaDespesa;
 
     @Override
@@ -46,12 +43,4 @@ public class TipoDespesa {
         return Objects.hash(id);
     }
 
-    @Override
-    public String toString() {
-        return "TipoDespesa{" +
-                "id=" + id +
-                ", descricao='" + descricao + '\'' +
-                ", categoriaDespesa=" + categoriaDespesa.getId() +
-                '}';
-    }
 }
