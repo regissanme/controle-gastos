@@ -2,10 +2,7 @@ package br.com.rsanme.controlegastos.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +29,8 @@ public class CategoriaDespesa {
     @Column(unique = true, nullable = false)
     private String descricao;
 
-    @OneToMany(mappedBy = "categoriaDespesa")
+    @ToString.Exclude
+    @OneToMany(mappedBy = "categoriaDespesa", cascade = CascadeType.ALL)
     private List<TipoDespesa> tiposDespesas = new ArrayList<>();
 
     @Override

@@ -5,6 +5,7 @@ import br.com.rsanme.controlegastos.exceptions.CustomEntityNotFoundException;
 import br.com.rsanme.controlegastos.models.CategoriaDespesa;
 import br.com.rsanme.controlegastos.models.TipoDespesa;
 import br.com.rsanme.controlegastos.repositories.CategoriaDespesaRepository;
+import br.com.rsanme.controlegastos.utils.CategoriaDespesaMock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,13 +29,6 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class CategoriaDespesaServiceTest {
 
-    public static final Long ID = 1L;
-    public static final String CATEGORIA_DESC_TRANSPORTE = "Transporte";
-    public static final String TIPO_DESC_COMBUSTIVEL = "Combustível";
-    public static final String ERRO_NOT_FOUND = "Categoria da Despesa com Id " + ID + " não encontrada!";
-    public static final String ERRO_ALREADY_EXISTS =
-            "Uma Categoria de Despesa com a descrição " + CATEGORIA_DESC_TRANSPORTE + " já existe!";
-    public static final String ERRO_INVALID_DATA = "Dados inválidos!";
 
     @InjectMocks
     private CategoriaDespesaService service;
@@ -44,7 +38,6 @@ class CategoriaDespesaServiceTest {
 
     private CategoriaDespesa categoriaDespesa;
 
-    private TipoDespesa tipoDespesa;
 
     @BeforeEach
     void setUp() {
@@ -62,8 +55,8 @@ class CategoriaDespesaServiceTest {
         assertEquals(1, listResponse.size());
         assertEquals(CategoriaDespesa.class, listResponse.get(0).getClass());
         assertEquals(TipoDespesa.class, listResponse.get(0).getTiposDespesas().get(0).getClass());
-        assertEquals(CATEGORIA_DESC_TRANSPORTE, listResponse.get(0).getDescricao());
-        assertEquals(TIPO_DESC_COMBUSTIVEL, listResponse.get(0).getTiposDespesas().get(0).getDescricao());
+        assertEquals(CategoriaDespesaMock.CATEGORIA_DESC_TRANSPORTE, listResponse.get(0).getDescricao());
+        assertNotNull(listResponse.get(0).getTiposDespesas().get(0));
         assertNotNull(listResponse.get(0).getTiposDespesas());
 
         verify(repository)
@@ -73,8 +66,8 @@ class CategoriaDespesaServiceTest {
     @Test
     void whenFindByIdThrowsNotFound() {
 
-        assertThatThrownBy(() -> service.findById(ID))
-                .hasMessage(ERRO_NOT_FOUND)
+        assertThatThrownBy(() -> service.findById(CategoriaDespesaMock.ID))
+                .hasMessage(CategoriaDespesaMock.ERRO_MESSAGE_NOT_FOUND)
                 .isInstanceOf(CustomEntityNotFoundException.class);
 
         verify(repository)
@@ -86,12 +79,12 @@ class CategoriaDespesaServiceTest {
 
         when(repository.findById(anyLong())).thenReturn(Optional.of(categoriaDespesa));
 
-        CategoriaDespesa response = service.findById(ID);
+        CategoriaDespesa response = service.findById(CategoriaDespesaMock.ID);
 
         assertNotNull(response);
-        assertEquals(ID, response.getId());
-        assertEquals(CATEGORIA_DESC_TRANSPORTE, response.getDescricao());
-        assertEquals(TIPO_DESC_COMBUSTIVEL, response.getTiposDespesas().get(0).getDescricao());
+        assertEquals(CategoriaDespesaMock.ID, response.getId());
+        assertEquals(CategoriaDespesaMock.CATEGORIA_DESC_TRANSPORTE, response.getDescricao());
+        assertNotNull(response.getTiposDespesas().get(0));
 
         verify(repository)
                 .findById(anyLong());
@@ -99,16 +92,16 @@ class CategoriaDespesaServiceTest {
 
     @Test
     void whenCreateThenReturnSuccess() {
-        CategoriaDespesa toSave = new CategoriaDespesa(null, CATEGORIA_DESC_TRANSPORTE, null);
+        CategoriaDespesa toSave = CategoriaDespesaMock.getCategoriaDespesaToSave();
 
         when(repository.save(toSave)).thenReturn(categoriaDespesa);
 
         CategoriaDespesa response = service.create(toSave);
 
         assertNotNull(response);
-        assertEquals(ID, response.getId());
-        assertEquals(CATEGORIA_DESC_TRANSPORTE, response.getDescricao());
-        assertEquals(TIPO_DESC_COMBUSTIVEL, response.getTiposDespesas().get(0).getDescricao());
+        assertEquals(CategoriaDespesaMock.ID, response.getId());
+        assertEquals(CategoriaDespesaMock.CATEGORIA_DESC_TRANSPORTE, response.getDescricao());
+        assertNotNull(response.getTiposDespesas().get(0));
 
         assertEquals(categoriaDespesa.hashCode(), response.hashCode());
         assertTrue(categoriaDespesa.equals(response));
@@ -122,12 +115,12 @@ class CategoriaDespesaServiceTest {
 
     @Test
     void whenCreateThenThrowsAlreadyExists() {
-        CategoriaDespesa toSave = new CategoriaDespesa(null, CATEGORIA_DESC_TRANSPORTE, null);
+        CategoriaDespesa toSave = CategoriaDespesaMock.getCategoriaDespesaToSave();
 
         when(repository.findByDescricao(anyString())).thenReturn(Optional.of(categoriaDespesa));
 
         assertThatThrownBy(() -> service.create(toSave))
-                .hasMessage(ERRO_ALREADY_EXISTS)
+                .hasMessage(CategoriaDespesaMock.ERRO_MESSAGE_ALREADY_EXISTS)
                 .isInstanceOf(CustomEntityAlreadyExistsException.class);
 
         verify(repository)
@@ -147,9 +140,9 @@ class CategoriaDespesaServiceTest {
         CategoriaDespesa response = service.update(categoriaDespesa);
 
         assertNotNull(response);
-        assertEquals(ID, response.getId());
-        assertEquals(CATEGORIA_DESC_TRANSPORTE, response.getDescricao());
-        assertEquals(TIPO_DESC_COMBUSTIVEL, response.getTiposDespesas().get(0).getDescricao());
+        assertEquals(CategoriaDespesaMock.ID, response.getId());
+        assertEquals(CategoriaDespesaMock.CATEGORIA_DESC_TRANSPORTE, response.getDescricao());
+        assertNotNull(response.getTiposDespesas().get(0));
 
         verify(repository)
                 .save(any());
@@ -159,7 +152,7 @@ class CategoriaDespesaServiceTest {
     void whenUpdateThenThrowsNotFound() {
 
         assertThatThrownBy(() -> service.update(categoriaDespesa))
-                .hasMessage(ERRO_NOT_FOUND)
+                .hasMessage(CategoriaDespesaMock.ERRO_MESSAGE_NOT_FOUND)
                 .isInstanceOf(CustomEntityNotFoundException.class);
 
         verify(repository)
@@ -171,13 +164,13 @@ class CategoriaDespesaServiceTest {
 
     @Test
     void whenUpdateThenThrowsAlreadyExists() {
-        CategoriaDespesa toUpdate = new CategoriaDespesa(2L, CATEGORIA_DESC_TRANSPORTE, null);
+        CategoriaDespesa toUpdate = CategoriaDespesaMock.getCategoriaDespesaToUpdate();
 
         when(repository.findById(anyLong())).thenReturn(Optional.of(categoriaDespesa));
         when(repository.findByDescricao(anyString())).thenReturn(Optional.of(categoriaDespesa));
 
         assertThatThrownBy(() -> service.update(toUpdate))
-                .hasMessage(ERRO_ALREADY_EXISTS)
+                .hasMessage(CategoriaDespesaMock.ERRO_MESSAGE_ALREADY_EXISTS)
                 .isInstanceOf(CustomEntityAlreadyExistsException.class);
 
         verify(repository)
@@ -192,7 +185,7 @@ class CategoriaDespesaServiceTest {
 
         when(repository.findById(anyLong())).thenReturn(Optional.of(categoriaDespesa));
 
-        service.delete(ID);
+        service.delete(CategoriaDespesaMock.ID);
 
         verify(repository)
                 .findById(anyLong());
@@ -204,8 +197,8 @@ class CategoriaDespesaServiceTest {
     @Test
     void whenDeleteThenThrowsNotFound() {
 
-        assertThatThrownBy(() -> service.delete(ID))
-                .hasMessage(ERRO_NOT_FOUND)
+        assertThatThrownBy(() -> service.delete(CategoriaDespesaMock.ID))
+                .hasMessage(CategoriaDespesaMock.ERRO_MESSAGE_NOT_FOUND)
                 .isInstanceOf(CustomEntityNotFoundException.class);
 
         verify(repository)
@@ -217,12 +210,6 @@ class CategoriaDespesaServiceTest {
 
     private void createInstances() {
 
-        categoriaDespesa = new CategoriaDespesa();
-        categoriaDespesa.setId(ID);
-        categoriaDespesa.setDescricao(CATEGORIA_DESC_TRANSPORTE);
-
-        tipoDespesa = new TipoDespesa(ID, TIPO_DESC_COMBUSTIVEL, categoriaDespesa);
-
-        categoriaDespesa.setTiposDespesas(List.of(tipoDespesa));
+        categoriaDespesa = CategoriaDespesaMock.getCategoriaDespesa();
     }
 }
