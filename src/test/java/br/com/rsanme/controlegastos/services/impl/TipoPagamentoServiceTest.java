@@ -4,6 +4,7 @@ import br.com.rsanme.controlegastos.exceptions.CustomEntityAlreadyExistsExceptio
 import br.com.rsanme.controlegastos.exceptions.CustomEntityNotFoundException;
 import br.com.rsanme.controlegastos.models.TipoPagamento;
 import br.com.rsanme.controlegastos.repositories.TipoPagamentoRepository;
+import br.com.rsanme.controlegastos.utils.TipoPagamentoMock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,8 +29,6 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class TipoPagamentoServiceTest {
 
-    public static final Long ID = 1L;
-    public static final String TIPO_PAGAMENTO_DINHEIRO = "Dinheiro";
     @InjectMocks
     private TipoPagamentoService service;
 
@@ -57,8 +56,7 @@ class TipoPagamentoServiceTest {
         assertEquals(TipoPagamento.class, response.get(0).getClass());
         assertEquals(tipoPagamento, response.get(0));
 
-        verify(repository)
-                .findAll();
+        verify(repository).findAll();
     }
 
     @Test
@@ -66,34 +64,29 @@ class TipoPagamentoServiceTest {
 
         when(repository.findById(anyLong())).thenReturn(Optional.of(tipoPagamento));
 
-        TipoPagamento response = service.findById(ID);
+        TipoPagamento response = service.findById(TipoPagamentoMock.ID);
 
         assertNotNull(response);
         assertEquals(TipoPagamento.class, response.getClass());
-        assertEquals(TIPO_PAGAMENTO_DINHEIRO, response.getTipo());
-        assertEquals(ID, response.getId());
+        assertEquals(TipoPagamentoMock.TIPO_PAGAMENTO_DINHEIRO, response.getTipo());
+        assertEquals(TipoPagamentoMock.ID, response.getId());
 
-        verify(repository)
-                .findById(anyLong());
+        verify(repository).findById(anyLong());
     }
 
     @Test
     void whenFindByIdThenThrowsNotFound() {
 
-        String errorMessage = String.format("Tipo de Pagamento com Id %s não encontrado!", ID);
-
-        assertThatThrownBy(() -> service.findById(ID))
-                .hasMessage(errorMessage)
+        assertThatThrownBy(() -> service.findById(TipoPagamentoMock.ID))
+                .hasMessage(TipoPagamentoMock.ERROR_MESSAGE_NOT_FOUND)
                 .isInstanceOf(CustomEntityNotFoundException.class);
 
-        verify(repository)
-                .findById(anyLong());
+        verify(repository).findById(anyLong());
     }
 
     @Test
     void whenCreateThenReturnSuccess() {
-        TipoPagamento toSave = new TipoPagamento();
-        toSave.setTipo(TIPO_PAGAMENTO_DINHEIRO);
+        TipoPagamento toSave = TipoPagamentoMock.getTipoPagamentoToSave();
 
         when(repository.findByTipo(anyString())).thenReturn(Optional.empty());
         when(repository.save(any())).thenReturn(tipoPagamento);
@@ -111,30 +104,23 @@ class TipoPagamentoServiceTest {
         assertFalse(tipoPagamento.equals(toSave));
         assertTrue(tipoPagamento.toString().contains("TipoPagamento"));
 
-        verify(repository)
-                .save(any());
+        verify(repository).save(any());
     }
 
     @Test
     void whenCreateThenThrowsException() {
 
-        TipoPagamento paraSalvar = new TipoPagamento();
-        paraSalvar.setTipo(TIPO_PAGAMENTO_DINHEIRO);
-
-        String errorMessage = String.format(
-                "Um Tipo de Pagamento com o tipo %s já existe!", TIPO_PAGAMENTO_DINHEIRO);
+        TipoPagamento toSave = TipoPagamentoMock.getTipoPagamentoToSave();
 
         when(repository.findByTipo(anyString())).thenReturn(Optional.of(tipoPagamento));
 
-        assertThatThrownBy(() -> service.create(paraSalvar))
-                .hasMessage(errorMessage)
+        assertThatThrownBy(() -> service.create(toSave))
+                .hasMessage(TipoPagamentoMock.ERROR_MESSAGE_ALREADY_EXISTS)
                 .isInstanceOf(CustomEntityAlreadyExistsException.class);
 
-        verify(repository)
-                .findByTipo(TIPO_PAGAMENTO_DINHEIRO);
+        verify(repository).findByTipo(anyString());
 
-        verify(repository, never())
-                .save(any());
+        verify(repository, never()).save(any());
     }
 
     @Test
@@ -151,48 +137,37 @@ class TipoPagamentoServiceTest {
         assertEquals(tipoPagamento.getId(), response.getId());
         assertEquals(tipoPagamento.getTipo(), response.getTipo());
 
-        verify(repository)
-                .save(any());
+        verify(repository).save(any());
     }
 
     @Test
     void whenUpdateThenThrowsNotFound() {
 
-        String errorMessage = String.format("Tipo de Pagamento com Id %s não encontrado!", ID);
-
         assertThatThrownBy(() -> service.update(tipoPagamento))
-                .hasMessage(errorMessage)
+                .hasMessage(TipoPagamentoMock.ERROR_MESSAGE_NOT_FOUND)
                 .isInstanceOf(CustomEntityNotFoundException.class);
 
-        verify(repository)
-                .findById(anyLong());
+        verify(repository).findById(anyLong());
 
-        verify(repository, never())
-                .save(any());
+        verify(repository, never()).save(any());
     }
 
     @Test
     void whenUpdateThenThrowsAlreadyExists() {
 
-        TipoPagamento paraAtualizar = new TipoPagamento();
-        paraAtualizar.setId(2L);
-        paraAtualizar.setTipo(TIPO_PAGAMENTO_DINHEIRO);
-
-        String errorMessage = String.format(
-                "Um Tipo de Pagamento com o tipo %s já existe!", TIPO_PAGAMENTO_DINHEIRO);
+        TipoPagamento toUpdate = TipoPagamentoMock.getTipoPagamentoToUpdate();
+        toUpdate.setId(2L);
 
         when(repository.findById(anyLong())).thenReturn(Optional.of(tipoPagamento));
         when(repository.findByTipo(anyString())).thenReturn(Optional.of(tipoPagamento));
 
-        assertThatThrownBy(() -> service.update(paraAtualizar))
-                .hasMessage(errorMessage)
+        assertThatThrownBy(() -> service.update(toUpdate))
+                .hasMessage(TipoPagamentoMock.ERROR_MESSAGE_ALREADY_EXISTS)
                 .isInstanceOf(CustomEntityAlreadyExistsException.class);
 
-        verify(repository)
-                .findByTipo(TIPO_PAGAMENTO_DINHEIRO);
+        verify(repository).findByTipo(anyString());
 
-        verify(repository, never())
-                .save(any());
+        verify(repository, never()).save(any());
     }
 
     @Test
@@ -200,32 +175,26 @@ class TipoPagamentoServiceTest {
 
         when(repository.findById(anyLong())).thenReturn(Optional.of(tipoPagamento));
 
-        service.delete(ID);
+        service.delete(TipoPagamentoMock.ID);
 
-        verify(repository)
-                .findById(anyLong());
+        verify(repository).findById(anyLong());
 
-        verify(repository)
-                .deleteById(anyLong());
+        verify(repository).deleteById(anyLong());
     }
 
     @Test
     void whenDeleteThenThrowsNotFound() {
 
-        String errorMessage = String.format("Tipo de Pagamento com Id %s não encontrado!", ID);
-
-        assertThatThrownBy(() -> service.delete(ID))
-                .hasMessage(errorMessage)
+        assertThatThrownBy(() -> service.delete(TipoPagamentoMock.ID))
+                .hasMessage(TipoPagamentoMock.ERROR_MESSAGE_NOT_FOUND)
                 .isInstanceOf(CustomEntityNotFoundException.class);
 
-        verify(repository)
-                .findById(anyLong());
+        verify(repository).findById(anyLong());
 
-        verify(repository, never())
-                .deleteById(anyLong());
+        verify(repository, never()).deleteById(anyLong());
     }
 
     private void createInstances() {
-        tipoPagamento = new TipoPagamento(1L, TIPO_PAGAMENTO_DINHEIRO);
+        tipoPagamento = TipoPagamentoMock.getTipoPagamento();
     }
 }

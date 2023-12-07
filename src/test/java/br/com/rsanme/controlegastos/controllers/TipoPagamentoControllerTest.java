@@ -5,6 +5,7 @@ import br.com.rsanme.controlegastos.exceptions.CustomEntityNotFoundException;
 import br.com.rsanme.controlegastos.exceptions.handlers.CustomApiExceptionHandler;
 import br.com.rsanme.controlegastos.models.TipoPagamento;
 import br.com.rsanme.controlegastos.services.impl.TipoPagamentoService;
+import br.com.rsanme.controlegastos.utils.TipoPagamentoMock;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,12 +31,7 @@ import static org.springframework.http.HttpStatus.*;
 @ExtendWith(MockitoExtension.class)
 class TipoPagamentoControllerTest {
 
-    public static final String API_URL = "/api/v1/tipo-pagamento/";
-
-    public static final Long ID = 1L;
-    public static final String EXPENSIVE_TYPE = "DINHEIRO";
-    public static final String ERROR_MESSAGE_NOT_FOUND = "Tipo de Pagamento com Id " + ID + " não encontrado!";
-    public static final String ERROR_MESSAGE_ALREADY_EXISTS = "Um Tipo de Pagamento com o tipo " + EXPENSIVE_TYPE + " já existe!";
+    public static final String API_URL = "/api/v1/pagamento/tipo/";
 
     @Mock
     private TipoPagamentoService service;
@@ -79,7 +75,7 @@ class TipoPagamentoControllerTest {
 
         given()
                 .when()
-                .get(API_URL + ID)
+                .get(API_URL + TipoPagamentoMock.ID)
                 .then()
                 .log().ifValidationFails()
                 .statusCode(OK.value());
@@ -91,11 +87,12 @@ class TipoPagamentoControllerTest {
     @Test
     void whenFindByIdExpensiveTypeThenReturnNotFound() {
 
-        when(service.findById(anyLong())).thenThrow(new CustomEntityNotFoundException(ERROR_MESSAGE_NOT_FOUND));
+        when(service.findById(anyLong()))
+                .thenThrow(new CustomEntityNotFoundException(TipoPagamentoMock.ERROR_MESSAGE_NOT_FOUND));
 
         given()
                 .when()
-                .get(API_URL + ID)
+                .get(API_URL + TipoPagamentoMock.ID)
                 .then()
                 .log().ifValidationFails()
                 .statusCode(NOT_FOUND.value());
@@ -157,11 +154,11 @@ class TipoPagamentoControllerTest {
     @Test
     void whenCreateExpensiveTypeThenReturnAlreadyExists() {
 
-        TipoPagamento toSave = tipoPagamento;
+        TipoPagamento toSave = TipoPagamentoMock.getTipoPagamentoToSave();
         toSave.setId(2L);
 
         when(service.create(any(TipoPagamento.class)))
-                .thenThrow(new CustomEntityAlreadyExistsException(ERROR_MESSAGE_ALREADY_EXISTS));
+                .thenThrow(new CustomEntityAlreadyExistsException(TipoPagamentoMock.ERROR_MESSAGE_ALREADY_EXISTS));
 
         given()
                 .body(toSave)
@@ -216,14 +213,14 @@ class TipoPagamentoControllerTest {
     @Test
     void whenUpdateExpensiveTypeThenReturnAlreadyExists() {
 
-        TipoPagamento toSave = tipoPagamento;
-        toSave.setId(2L);
+        TipoPagamento toUpdate = TipoPagamentoMock.getTipoPagamentoToUpdate();
+        toUpdate.setId(2L);
 
         when(service.update(any(TipoPagamento.class)))
-                .thenThrow(new CustomEntityAlreadyExistsException(ERROR_MESSAGE_ALREADY_EXISTS));
+                .thenThrow(new CustomEntityAlreadyExistsException(TipoPagamentoMock.ERROR_MESSAGE_ALREADY_EXISTS));
 
         given()
-                .body(toSave)
+                .body(toUpdate)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .when()
@@ -239,11 +236,11 @@ class TipoPagamentoControllerTest {
     @Test
     void whenUpdateExpensiveTypeThenReturnNotFound() {
 
-        TipoPagamento toUpdate = tipoPagamento;
+        TipoPagamento toUpdate = TipoPagamentoMock.getTipoPagamentoToUpdate();
         toUpdate.setId(2L);
 
         when(service.update(any(TipoPagamento.class)))
-                .thenThrow(new CustomEntityNotFoundException(ERROR_MESSAGE_NOT_FOUND));
+                .thenThrow(new CustomEntityNotFoundException(TipoPagamentoMock.ERROR_MESSAGE_NOT_FOUND));
 
         given()
                 .body(toUpdate)
@@ -266,7 +263,7 @@ class TipoPagamentoControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .when()
-                .delete(API_URL + ID)
+                .delete(API_URL + TipoPagamentoMock.ID)
                 .then()
                 .log().ifValidationFails()
                 .statusCode(OK.value());
@@ -294,9 +291,6 @@ class TipoPagamentoControllerTest {
 
     private void createInstances() {
 
-        tipoPagamento = new TipoPagamento();
-        tipoPagamento.setId(ID);
-        tipoPagamento.setTipo(EXPENSIVE_TYPE);
-
+        tipoPagamento = TipoPagamentoMock.getTipoPagamento();
     }
 }
