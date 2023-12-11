@@ -53,7 +53,7 @@ class TipoPagamentoControllerTest {
 
 
     @Test
-    void whenFindAllExpensiveTypeThenReturnList() {
+    void whenFindAllPaymentTypeThenReturnList() {
 
         when(service.findAll()).thenReturn(List.of(tipoPagamento));
 
@@ -69,7 +69,7 @@ class TipoPagamentoControllerTest {
     }
 
     @Test
-    void whenFindByIdExpensiveTypeThenReturnSuccess() {
+    void whenFindByIdPaymentTypeThenReturnSuccess() {
 
         when(service.findById(anyLong())).thenReturn(tipoPagamento);
 
@@ -85,7 +85,7 @@ class TipoPagamentoControllerTest {
     }
 
     @Test
-    void whenFindByIdExpensiveTypeThenReturnNotFound() {
+    void whenFindByIdPaymentTypeThenReturnNotFound() {
 
         when(service.findById(anyLong()))
                 .thenThrow(new CustomEntityNotFoundException(TipoPagamentoMock.ERROR_MESSAGE_NOT_FOUND));
@@ -102,7 +102,7 @@ class TipoPagamentoControllerTest {
     }
 
     @Test
-    void whenFindByIdExpensiveTypeThenReturnBadRequest() {
+    void whenFindByIdPaymentTypeThenReturnBadRequest() {
 
         given()
                 .when()
@@ -116,7 +116,7 @@ class TipoPagamentoControllerTest {
     }
 
     @Test
-    void whenCreateExpensiveTypeThenReturnCreated() {
+    void whenCreatePaymentTypeThenReturnCreated() {
 
         when(service.create(any(TipoPagamento.class))).thenReturn(tipoPagamento);
 
@@ -135,7 +135,7 @@ class TipoPagamentoControllerTest {
     }
 
     @Test
-    void whenCreateExpensiveTypeThenReturnBadRequest() {
+    void whenCreatePaymentTypeThenReturnBadRequest() {
 
         given()
                 .body(new TipoPagamento())
@@ -152,7 +152,7 @@ class TipoPagamentoControllerTest {
     }
 
     @Test
-    void whenCreateExpensiveTypeThenReturnAlreadyExists() {
+    void whenCreatePaymentTypeThenReturnAlreadyExists() {
 
         TipoPagamento toSave = TipoPagamentoMock.getTipoPagamentoToSave();
         toSave.setId(2L);
@@ -175,7 +175,7 @@ class TipoPagamentoControllerTest {
     }
 
     @Test
-    void whenUpdateExpensiveTypeThenReturnBadRequest() {
+    void whenUpdatePaymentTypeThenReturnBadRequest() {
 
         given()
                 .body(new TipoPagamento())
@@ -192,7 +192,7 @@ class TipoPagamentoControllerTest {
     }
 
     @Test
-    void whenUpdateExpensiveTypeThenReturnSuccess() {
+    void whenUpdatePaymentTypeThenReturnSuccess() {
 
         when(service.update(any(TipoPagamento.class))).thenReturn(tipoPagamento);
 
@@ -211,7 +211,7 @@ class TipoPagamentoControllerTest {
     }
 
     @Test
-    void whenUpdateExpensiveTypeThenReturnAlreadyExists() {
+    void whenUpdatePaymentTypeThenReturnAlreadyExists() {
 
         TipoPagamento toUpdate = TipoPagamentoMock.getTipoPagamentoToUpdate();
         toUpdate.setId(2L);
@@ -234,7 +234,7 @@ class TipoPagamentoControllerTest {
     }
 
     @Test
-    void whenUpdateExpensiveTypeThenReturnNotFound() {
+    void whenUpdatePaymentTypeThenReturnNotFound() {
 
         TipoPagamento toUpdate = TipoPagamentoMock.getTipoPagamentoToUpdate();
         toUpdate.setId(2L);
@@ -257,7 +257,7 @@ class TipoPagamentoControllerTest {
     }
 
     @Test
-    void whenDeleteExpensiveTypeThenReturnSuccess() {
+    void whenDeletePaymentTypeThenReturnSuccess() {
 
         given()
                 .accept(MediaType.APPLICATION_JSON)
@@ -273,7 +273,7 @@ class TipoPagamentoControllerTest {
     }
 
     @Test
-    void whenDeleteExpensiveTypeThenReturnBadRequest() {
+    void whenDeletePaymentTypeThenReturnBadRequest() {
 
         given()
                 .accept(MediaType.APPLICATION_JSON)
