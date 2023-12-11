@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Objects;
 
@@ -25,7 +28,6 @@ public class TipoDespesa {
     private String descricao;
 
     @JsonIgnore
-    @NotNull(message = "A categoria da despesa é obrigatória!")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "categoria_despesa_id", nullable = false)
     private CategoriaDespesa categoriaDespesa;

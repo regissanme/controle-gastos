@@ -12,8 +12,8 @@ public class TipoDespesaMock {
 
     public static final Long ID = 1L;
     public static final String DESCRICAO_COMBUSTIVEL = "Combustível";
-    public static final String ERRO_MESSAGE_NOT_FOUND = "Tipo de Despesa com Id " + ID + " não encontrado!";
-    public static final String ERRO_MESSAGE_ALREADY_EXISTS = "Um Tipo de Despesa com a descrição " + DESCRICAO_COMBUSTIVEL + " já existe!";
+    public static final String ERROR_MESSAGE_NOT_FOUND = "Tipo de Despesa com Id " + ID + " não encontrado!";
+    public static final String ERROR_MESSAGE_ALREADY_EXISTS = "Um Tipo de Despesa com a descrição " + DESCRICAO_COMBUSTIVEL + " já existe!";
     public static final String ERRO_INVALID_DATA = "Dados inválidos!";
 
     public static TipoDespesa getTipoDespesa() {
