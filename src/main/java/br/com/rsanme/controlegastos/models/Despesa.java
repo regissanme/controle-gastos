@@ -1,6 +1,9 @@
 package br.com.rsanme.controlegastos.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,17 +29,21 @@ public class Despesa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "O mês é obrigatório!")
     @Column(nullable = false)
     private String mes;
 
-
+    @NotNull(message = "O valor precisa ser maior que 0 (zero)!")
+    @DecimalMin(value = "0.01", message = "O valor precisa ser maior que 0 (zero)!")
     private BigDecimal valor;
 
     private String descricao;
 
+    @NotNull
     @OneToOne
     private TipoPagamento tipoPagamento;
 
+    @NotNull
     @OneToOne
     private TipoDespesa tipoDespesa;
 
