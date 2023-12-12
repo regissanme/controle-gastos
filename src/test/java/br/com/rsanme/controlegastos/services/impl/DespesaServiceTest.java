@@ -1,11 +1,11 @@
 package br.com.rsanme.controlegastos.services.impl;
 
 import br.com.rsanme.controlegastos.exceptions.CustomEntityNotFoundException;
-import br.com.rsanme.controlegastos.models.CategoriaDespesa;
 import br.com.rsanme.controlegastos.models.Despesa;
 import br.com.rsanme.controlegastos.models.TipoDespesa;
 import br.com.rsanme.controlegastos.models.TipoPagamento;
 import br.com.rsanme.controlegastos.repositories.DespesaRepository;
+import br.com.rsanme.controlegastos.utils.DespesaMock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,7 +13,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,12 +30,6 @@ import static org.mockito.Mockito.*;
  */
 @ExtendWith(MockitoExtension.class)
 class DespesaServiceTest {
-
-    public static final Long ID = 1L;
-    public static final String MES = "JANEIRO";
-    public static final String DESCRICAO_DESPESA = "Gasto com combustível";
-    public static final BigDecimal VALOR = new BigDecimal("200.54");
-    public static final String ERRO_NOT_FOUND = "Despesa não encontrada com Id: " + ID;
 
     @InjectMocks
     private DespesaService service;
@@ -70,13 +63,13 @@ class DespesaServiceTest {
 
         when(repository.findById(anyLong())).thenReturn(Optional.of(despesa));
 
-        Despesa response = service.findById(ID);
+        Despesa response = service.findById(DespesaMock.ID);
 
         assertNotNull(response);
-        assertEquals(ID, response.getId());
-        assertEquals(MES, response.getMes());
-        assertEquals(DESCRICAO_DESPESA, response.getDescricao());
-        assertEquals(VALOR, response.getValor());
+        assertEquals(DespesaMock.ID, response.getId());
+        assertEquals(DespesaMock.MES, response.getMes());
+        assertEquals(DespesaMock.DESCRICAO_DESPESA, response.getDescricao());
+        assertEquals(DespesaMock.VALOR, response.getValor());
         assertEquals(TipoDespesa.class, response.getTipoDespesa().getClass());
         assertEquals(TipoPagamento.class, response.getTipoPagamento().getClass());
 
@@ -86,8 +79,8 @@ class DespesaServiceTest {
     @Test
     void whenFindByIdThenThrowsNotFound() {
 
-        assertThatThrownBy(() -> service.findById(ID))
-                .hasMessage(ERRO_NOT_FOUND)
+        assertThatThrownBy(() -> service.findById(DespesaMock.ID))
+                .hasMessage(DespesaMock.ERROR_MESSAGE_NOT_FOUND)
                 .isInstanceOf(CustomEntityNotFoundException.class);
 
         verify(repository).findById(anyLong());
@@ -96,17 +89,17 @@ class DespesaServiceTest {
     @Test
     void whenCreateThenReturnInstance() {
 
-        Despesa toSave = new Despesa(null, MES, VALOR, DESCRICAO_DESPESA, new TipoPagamento(), new TipoDespesa());
+        Despesa toSave = DespesaMock.getDespesaToSave();
 
         when(repository.save(any(Despesa.class))).thenReturn(despesa);
 
         Despesa response = service.create(toSave);
 
         assertNotNull(response);
-        assertEquals(ID, response.getId());
-        assertEquals(MES, response.getMes());
-        assertEquals(DESCRICAO_DESPESA, response.getDescricao());
-        assertEquals(VALOR, response.getValor());
+        assertEquals(DespesaMock.ID, response.getId());
+        assertEquals(DespesaMock.MES, response.getMes());
+        assertEquals(DespesaMock.DESCRICAO_DESPESA, response.getDescricao());
+        assertEquals(DespesaMock.VALOR, response.getValor());
         assertEquals(TipoDespesa.class, response.getTipoDespesa().getClass());
         assertEquals(TipoPagamento.class, response.getTipoPagamento().getClass());
         assertTrue(despesa.equals(response));
@@ -136,7 +129,7 @@ class DespesaServiceTest {
     void whenUpdateThenThrowsNotFound() {
 
         assertThatThrownBy(() -> service.update(despesa))
-                .hasMessage(ERRO_NOT_FOUND)
+                .hasMessage(DespesaMock.ERROR_MESSAGE_NOT_FOUND)
                 .isInstanceOf(CustomEntityNotFoundException.class);
 
         verify(repository).findById(anyLong());
@@ -148,7 +141,7 @@ class DespesaServiceTest {
 
         when(repository.findById(anyLong())).thenReturn(Optional.of(despesa));
 
-        service.delete(ID);
+        service.delete(DespesaMock.ID);
 
         verify(repository).findById(anyLong());
         verify(repository).deleteById(anyLong());
@@ -157,8 +150,8 @@ class DespesaServiceTest {
     @Test
     void whenDeleteThenThrowsNotFound() {
 
-        assertThatThrownBy(() -> service.delete(ID))
-                .hasMessage(ERRO_NOT_FOUND)
+        assertThatThrownBy(() -> service.delete(DespesaMock.ID))
+                .hasMessage(DespesaMock.ERROR_MESSAGE_NOT_FOUND)
                 .isInstanceOf(CustomEntityNotFoundException.class);
 
         verify(repository).findById(anyLong());
@@ -167,23 +160,7 @@ class DespesaServiceTest {
 
     private void createInstances() {
 
-        TipoPagamento tipoPagamento = new TipoPagamento();
-        tipoPagamento.setId(ID);
-
-        CategoriaDespesa categoriaDespesa = new CategoriaDespesa();
-        categoriaDespesa.setId(ID);
-
-        TipoDespesa tipoDespesa = new TipoDespesa();
-        tipoDespesa.setId(ID);
-        tipoDespesa.setCategoriaDespesa(categoriaDespesa);
-
-        despesa = new Despesa();
-        despesa.setId(ID);
-        despesa.setMes(MES);
-        despesa.setValor(VALOR);
-        despesa.setDescricao(DESCRICAO_DESPESA);
-        despesa.setTipoPagamento(tipoPagamento);
-        despesa.setTipoDespesa(tipoDespesa);
+        despesa = DespesaMock.getDespesa();
 
     }
 }
