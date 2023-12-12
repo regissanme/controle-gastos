@@ -15,8 +15,8 @@ public class CategoriaDespesaMock {
 
     public static final Long ID = 1L;
     public static final String CATEGORIA_DESC_TRANSPORTE = "Transporte";
-    public static final String ERRO_MESSAGE_NOT_FOUND = "Categoria da Despesa com Id " + ID + " não encontrada!";
-    public static final String ERRO_MESSAGE_ALREADY_EXISTS =
+    public static final String ERROR_MESSAGE_NOT_FOUND = "Categoria da Despesa com Id " + ID + " não encontrada!";
+    public static final String ERROR_MESSAGE_ALREADY_EXISTS =
             "Uma Categoria de Despesa com a descrição " + CATEGORIA_DESC_TRANSPORTE + " já existe!";
     public static final String ERRO_INVALID_DATA = "Dados inválidos!";
 

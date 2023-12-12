@@ -67,7 +67,7 @@ class CategoriaDespesaServiceTest {
     void whenFindByIdThrowsNotFound() {
 
         assertThatThrownBy(() -> service.findById(CategoriaDespesaMock.ID))
-                .hasMessage(CategoriaDespesaMock.ERRO_MESSAGE_NOT_FOUND)
+                .hasMessage(CategoriaDespesaMock.ERROR_MESSAGE_NOT_FOUND)
                 .isInstanceOf(CustomEntityNotFoundException.class);
 
         verify(repository)
@@ -120,7 +120,7 @@ class CategoriaDespesaServiceTest {
         when(repository.findByDescricao(anyString())).thenReturn(Optional.of(categoriaDespesa));
 
         assertThatThrownBy(() -> service.create(toSave))
-                .hasMessage(CategoriaDespesaMock.ERRO_MESSAGE_ALREADY_EXISTS)
+                .hasMessage(CategoriaDespesaMock.ERROR_MESSAGE_ALREADY_EXISTS)
                 .isInstanceOf(CustomEntityAlreadyExistsException.class);
 
         verify(repository)
@@ -152,7 +152,7 @@ class CategoriaDespesaServiceTest {
     void whenUpdateThenThrowsNotFound() {
 
         assertThatThrownBy(() -> service.update(categoriaDespesa))
-                .hasMessage(CategoriaDespesaMock.ERRO_MESSAGE_NOT_FOUND)
+                .hasMessage(CategoriaDespesaMock.ERROR_MESSAGE_NOT_FOUND)
                 .isInstanceOf(CustomEntityNotFoundException.class);
 
         verify(repository)
@@ -170,7 +170,7 @@ class CategoriaDespesaServiceTest {
         when(repository.findByDescricao(anyString())).thenReturn(Optional.of(categoriaDespesa));
 
         assertThatThrownBy(() -> service.update(toUpdate))
-                .hasMessage(CategoriaDespesaMock.ERRO_MESSAGE_ALREADY_EXISTS)
+                .hasMessage(CategoriaDespesaMock.ERROR_MESSAGE_ALREADY_EXISTS)
                 .isInstanceOf(CustomEntityAlreadyExistsException.class);
 
         verify(repository)
@@ -198,7 +198,7 @@ class CategoriaDespesaServiceTest {
     void whenDeleteThenThrowsNotFound() {
 
         assertThatThrownBy(() -> service.delete(CategoriaDespesaMock.ID))
-                .hasMessage(CategoriaDespesaMock.ERRO_MESSAGE_NOT_FOUND)
+                .hasMessage(CategoriaDespesaMock.ERROR_MESSAGE_NOT_FOUND)
                 .isInstanceOf(CustomEntityNotFoundException.class);
 
         verify(repository)
