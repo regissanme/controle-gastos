@@ -45,4 +45,12 @@ public class TipoDespesa {
         return Objects.hash(id);
     }
 
+    @Override
+    public String toString() {
+        return "TipoDespesa{" +
+                "id=" + id +
+                ", descricao='" + descricao + '\'' +
+                ", categoriaDespesa=" + categoriaDespesa +
+                '}';
+    }
 }

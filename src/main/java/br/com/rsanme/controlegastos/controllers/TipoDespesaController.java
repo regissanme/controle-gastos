@@ -1,5 +1,6 @@
 package br.com.rsanme.controlegastos.controllers;
 
+import br.com.rsanme.controlegastos.dtos.TipoDespesaRequest;
 import br.com.rsanme.controlegastos.models.TipoDespesa;
 import br.com.rsanme.controlegastos.services.impl.TipoDespesaService;
 import jakarta.validation.Valid;
@@ -36,13 +37,14 @@ public class TipoDespesaController {
     }
 
     @PostMapping
-    public ResponseEntity<TipoDespesa> create(@RequestBody @Valid TipoDespesa tipoDespesa) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.create(tipoDespesa));
+    public ResponseEntity<TipoDespesa> create(@RequestBody @Valid TipoDespesaRequest request) {
+        System.out.println(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.create(request.toModel()));
     }
 
     @PutMapping
-    public ResponseEntity<TipoDespesa> update(@RequestBody @Valid TipoDespesa tipoDespesa) {
-        return ResponseEntity.ok(service.update(tipoDespesa));
+    public ResponseEntity<TipoDespesa> update(@RequestBody @Valid TipoDespesaRequest request) {
+        return ResponseEntity.ok(service.update(request.toModel()));
     }
 
     @DeleteMapping("/{id}")
