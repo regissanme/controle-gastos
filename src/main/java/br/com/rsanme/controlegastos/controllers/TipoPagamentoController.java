@@ -2,6 +2,7 @@ package br.com.rsanme.controlegastos.controllers;
 
 import br.com.rsanme.controlegastos.models.TipoPagamento;
 import br.com.rsanme.controlegastos.services.impl.TipoPagamentoService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/v1/pagamento/tipo")
+@Tag(name = "API dos Tipos de Pagamento")
 public class TipoPagamentoController {
 
     private final TipoPagamentoService service;
