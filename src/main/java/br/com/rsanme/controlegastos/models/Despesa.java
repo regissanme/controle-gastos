@@ -40,11 +40,11 @@ public class Despesa {
     private String descricao;
 
     @NotNull
-    @OneToOne
+    @ManyToOne
     private TipoPagamento tipoPagamento;
 
     @NotNull
-    @OneToOne
+    @ManyToOne
     private TipoDespesa tipoDespesa;
 
     @Override
