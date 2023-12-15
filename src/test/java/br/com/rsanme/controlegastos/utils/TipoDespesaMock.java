@@ -1,5 +1,6 @@
 package br.com.rsanme.controlegastos.utils;
 
+import br.com.rsanme.controlegastos.dtos.TipoDespesaRequest;
 import br.com.rsanme.controlegastos.models.TipoDespesa;
 
 /**
@@ -35,6 +36,26 @@ public class TipoDespesaMock {
     public static TipoDespesa getTipoDespesaToUpdate() {
         TipoDespesa tipoDespesa = getTipoDespesa();
         tipoDespesa.setId(2L);
+
+        return tipoDespesa;
+    }
+
+    public static TipoDespesaRequest getTipoDespesaRequestToSave() {
+
+        TipoDespesaRequest toSave = new TipoDespesaRequest();
+        toSave.setId(null);
+        toSave.setDescricao(DESCRICAO_COMBUSTIVEL);
+        toSave.setCategoriaDespesaId(ID);
+
+        System.out.println("toSave:" + toSave);
+
+        return toSave;
+    }
+
+    public static TipoDespesaRequest getTipoDespesaRequestToUpdate() {
+        TipoDespesaRequest tipoDespesa = getTipoDespesaRequestToSave();
+        tipoDespesa.setId(2L);
+
 
         return tipoDespesa;
     }

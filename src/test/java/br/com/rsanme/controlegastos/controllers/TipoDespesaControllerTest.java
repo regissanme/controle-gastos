@@ -1,13 +1,13 @@
 package br.com.rsanme.controlegastos.controllers;
 
+import br.com.rsanme.controlegastos.dtos.TipoDespesaRequest;
 import br.com.rsanme.controlegastos.exceptions.CustomEntityAlreadyExistsException;
 import br.com.rsanme.controlegastos.exceptions.CustomEntityNotFoundException;
 import br.com.rsanme.controlegastos.exceptions.handlers.CustomApiExceptionHandler;
 import br.com.rsanme.controlegastos.models.TipoDespesa;
-import br.com.rsanme.controlegastos.models.TipoDespesa;
 import br.com.rsanme.controlegastos.services.impl.TipoDespesaService;
 import br.com.rsanme.controlegastos.utils.TipoDespesaMock;
-import br.com.rsanme.controlegastos.utils.TipoDespesaMock;
+import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,13 +20,11 @@ import org.springframework.http.MediaType;
 import java.util.List;
 
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.springframework.http.HttpStatus.*;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 /**
  * Projeto: controle-gastos
@@ -38,16 +36,16 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 class TipoDespesaControllerTest {
 
     public static final String API_URL = "/api/v1/despesa/tipo/";
-    
+
     @Mock
     private TipoDespesaService service;
-    
+
     @InjectMocks
     private TipoDespesaController controller;
 
     @InjectMocks
     private CustomApiExceptionHandler exceptionHandler;
-    
+
     private TipoDespesa tipoDespesa;
 
     @BeforeEach
@@ -125,9 +123,9 @@ class TipoDespesaControllerTest {
         when(service.create(any(TipoDespesa.class))).thenReturn(tipoDespesa);
 
         given()
-                .body(tipoDespesa)
+                .body(TipoDespesaMock.getTipoDespesaRequestToSave())
                 .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON)
+                .contentType(ContentType.JSON)
                 .when()
                 .post(API_URL)
                 .then()
@@ -158,7 +156,7 @@ class TipoDespesaControllerTest {
     @Test
     void whenCreateExpensiveTypeThenReturnAlreadyExists() {
 
-        TipoDespesa toSave = TipoDespesaMock.getTipoDespesaToSave();
+        TipoDespesaRequest toSave = TipoDespesaMock.getTipoDespesaRequestToSave();
         toSave.setId(2L);
 
         when(service.create(any(TipoDespesa.class)))
@@ -201,7 +199,7 @@ class TipoDespesaControllerTest {
         when(service.update(any(TipoDespesa.class))).thenReturn(tipoDespesa);
 
         given()
-                .body(tipoDespesa)
+                .body(TipoDespesaMock.getTipoDespesaRequestToUpdate())
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .when()
@@ -217,7 +215,7 @@ class TipoDespesaControllerTest {
     @Test
     void whenUpdateExpensiveTypeThenReturnAlreadyExists() {
 
-        TipoDespesa toUpdate = TipoDespesaMock.getTipoDespesaToUpdate();
+        TipoDespesaRequest toUpdate = TipoDespesaMock.getTipoDespesaRequestToUpdate();
         toUpdate.setId(2L);
 
         when(service.update(any(TipoDespesa.class)))
@@ -240,7 +238,7 @@ class TipoDespesaControllerTest {
     @Test
     void whenUpdateExpensiveTypeThenReturnNotFound() {
 
-        TipoDespesa toUpdate = TipoDespesaMock.getTipoDespesaToUpdate();
+        TipoDespesaRequest toUpdate = TipoDespesaMock.getTipoDespesaRequestToUpdate();
         toUpdate.setId(2L);
         System.out.println(toUpdate.toString());
 
@@ -292,11 +290,9 @@ class TipoDespesaControllerTest {
         verify(service, never()).delete(anyLong());
         verifyNoMoreInteractions(service);
     }
-    
-    
-    
-    
-    private void createInstances(){
+
+
+    private void createInstances() {
         tipoDespesa = TipoDespesaMock.getTipoDespesa();
     }
 }
