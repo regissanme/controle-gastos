@@ -1,5 +1,6 @@
 package br.com.rsanme.controlegastos.controllers;
 
+import br.com.rsanme.controlegastos.dtos.DespesaRequest;
 import br.com.rsanme.controlegastos.exceptions.CustomEntityNotFoundException;
 import br.com.rsanme.controlegastos.exceptions.handlers.CustomApiExceptionHandler;
 import br.com.rsanme.controlegastos.models.Despesa;
@@ -119,7 +120,7 @@ class DespesaControllerTest {
         when(service.create(any(Despesa.class))).thenReturn(despesa);
 
         given()
-                .body(despesa)
+                .body(DespesaMock.getDespesaRequestToSave())
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .when()
@@ -172,7 +173,7 @@ class DespesaControllerTest {
         when(service.update(any(Despesa.class))).thenReturn(despesa);
 
         given()
-                .body(despesa)
+                .body(DespesaMock.getDespesaRequestToUpdate())
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .when()
@@ -188,7 +189,7 @@ class DespesaControllerTest {
     @Test
     void whenUpdateExpanseCategoryThenReturnNotFound() {
 
-        Despesa toUpdate = DespesaMock.getDespesaToUpdate();
+        DespesaRequest toUpdate = DespesaMock.getDespesaRequestToUpdate();
         toUpdate.setId(2L);
 
         when(service.update(any(Despesa.class)))

@@ -1,5 +1,6 @@
 package br.com.rsanme.controlegastos.utils;
 
+import br.com.rsanme.controlegastos.dtos.DespesaRequest;
 import br.com.rsanme.controlegastos.models.Despesa;
 
 import java.math.BigDecimal;
@@ -42,5 +43,23 @@ public class DespesaMock {
         despesa.setId(2L);
 
         return despesa;
+    }
+
+    public static DespesaRequest getDespesaRequestToSave() {
+        DespesaRequest toSave = new DespesaRequest();
+        toSave.setMes(MES);
+        toSave.setValor(VALOR);
+        toSave.setDescricao(DESCRICAO_DESPESA);
+        toSave.setTipoDespesaId(ID);
+        toSave.setTipoPagamentoId(ID);
+
+        return toSave;
+    }
+
+    public static DespesaRequest getDespesaRequestToUpdate() {
+        DespesaRequest toUpdate = getDespesaRequestToSave();
+        toUpdate.setId(2L);
+
+        return toUpdate;
     }
 }
