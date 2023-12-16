@@ -2,7 +2,9 @@ package br.com.rsanme.controlegastos.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Past;
 import lombok.*;
+import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -39,6 +41,7 @@ public class UserApp {
     private String name;
 
     @NotBlank(message = "O nome de usuário é obrigatório!")
+    @CPF(message = "CPF inválido!")
     @Column(nullable = false)
     private String cpf;
 
@@ -48,6 +51,7 @@ public class UserApp {
     @Column(columnDefinition = "boolean default true")
     private Boolean active;
 
+    @Past(message = "A data de nascimento deve ser anterior a data atual!")
     private Date birthDate;
 
     private LocalDateTime createdAt;
