@@ -1,0 +1,85 @@
+package br.com.rsanme.controlegastos.services.impl;
+
+import br.com.rsanme.controlegastos.exceptions.CustomEntityAlreadyExistsException;
+import br.com.rsanme.controlegastos.exceptions.CustomEntityNotFoundException;
+import br.com.rsanme.controlegastos.models.UserApp;
+import br.com.rsanme.controlegastos.repositories.UserAppRepository;
+import br.com.rsanme.controlegastos.services.ICrudService;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+/**
+ * Projeto: controle-gastos
+ * Desenvolvedor: Reginaldo Santos de Medeiros (regissanme)
+ * Data: 16/12/2023
+ * Hora: 17:36
+ */
+public class UserAppService implements ICrudService<UserApp> {
+
+    private final UserAppRepository repository;
+
+    public UserAppService(UserAppRepository repository) {
+        this.repository = repository;
+    }
+
+    @Override
+    public List<UserApp> findAll() {
+        return repository.findAll();
+    }
+
+    @Override
+    public UserApp findById(Long id) {
+        return repository.findById(id).orElseThrow(
+                () -> new CustomEntityNotFoundException(
+                        String.format("Usuário com Id %s não encontrado!", id))
+        );
+    }
+
+    @Override
+    public UserApp create(UserApp userApp) {
+
+        usernameExists(userApp);
+
+        userApp.setRole("ROLE_USER");
+        userApp.setCreatedAt(LocalDateTime.now());
+
+        return repository.save(userApp);
+    }
+
+    @Override
+    public UserApp update(UserApp userApp) {
+        UserApp toUpdate = findById(userApp.getId());
+        usernameExists(userApp);
+
+        userApp.setCpf(userApp.getCpf());
+        userApp.setCreatedAt(toUpdate.getCreatedAt());
+        userApp.setLastAccessAt(toUpdate.getLastAccessAt());
+        userApp.setCurrentAccessAt(toUpdate.getCurrentAccessAt());
+        userApp.setUpdatedAt(LocalDateTime.now());
+
+        return null;
+    }
+
+    @Override
+    public void delete(Long id) {
+        UserApp toDisable = findById(id);
+        toDisable.setActive(false);
+        update(toDisable);
+    }
+
+    public void enableUser(Long id) {
+        UserApp toDisable = findById(id);
+        toDisable.setActive(true);
+        update(toDisable);
+    }
+
+    private void usernameExists(UserApp userApp) {
+        UserApp byUsername = repository.findByUsername(userApp.getUsername());
+        if (byUsername != null && !byUsername.getId().equals(userApp.getId())) {
+            throw new CustomEntityAlreadyExistsException(
+                    String.format("Já existe um usuário com username %s", userApp.getUsername())
+            );
+        }
+    }
+}
