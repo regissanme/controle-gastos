@@ -7,6 +7,7 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Projeto: controle-gastos
@@ -43,5 +44,13 @@ public class UserResponse {
         response.setToken(token);
 
         return response;
+    }
+
+    public static List<UserResponse> toListResponse(List<UserApp> allUsers) {
+        return allUsers
+                .stream()
+                .map(
+                        userApp -> toResponse(userApp, null)
+                ).toList();
     }
 }
