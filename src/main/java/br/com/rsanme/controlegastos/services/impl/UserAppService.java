@@ -63,6 +63,11 @@ public class UserAppService implements ICrudService<UserApp> {
 
     @Override
     public void delete(Long id) {
+        findById(id);
+        repository.deleteById(id);
+    }
+
+    public void disableUser(Long id) {
         UserApp toDisable = findById(id);
         toDisable.setActive(false);
         update(toDisable);
