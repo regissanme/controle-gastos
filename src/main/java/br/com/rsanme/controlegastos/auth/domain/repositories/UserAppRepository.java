@@ -2,6 +2,7 @@ package br.com.rsanme.controlegastos.auth.domain.repositories;
 
 import br.com.rsanme.controlegastos.auth.domain.models.UserApp;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * Projeto: controle-gastos
@@ -11,5 +12,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface UserAppRepository extends JpaRepository<UserApp, Long> {
 
-    UserApp findByUsername(String username);
+    UserDetails findByUsername(String username);
 }

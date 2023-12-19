@@ -84,7 +84,7 @@ public class UserAppService implements IUserCrudService {
     }
 
     private void usernameExists(UserApp userApp) {
-        UserApp byUsername = repository.findByUsername(userApp.getUsername());
+        UserApp byUsername = (UserApp) repository.findByUsername(userApp.getUsername());
         if (byUsername != null && !byUsername.getId().equals(userApp.getId())) {
             throw new CustomEntityAlreadyExistsException(
                     String.format("Já existe um usuário com username %s", userApp.getUsername())
