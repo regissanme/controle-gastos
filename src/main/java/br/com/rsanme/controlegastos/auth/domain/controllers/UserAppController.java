@@ -1,9 +1,9 @@
-package br.com.rsanme.controlegastos.controllers;
+package br.com.rsanme.controlegastos.auth.domain.controllers;
 
-import br.com.rsanme.controlegastos.dtos.UserRequest;
-import br.com.rsanme.controlegastos.dtos.UserResponse;
-import br.com.rsanme.controlegastos.models.UserApp;
-import br.com.rsanme.controlegastos.services.impl.UserAppService;
+import br.com.rsanme.controlegastos.auth.domain.dtos.UserRequest;
+import br.com.rsanme.controlegastos.auth.domain.dtos.UserResponse;
+import br.com.rsanme.controlegastos.auth.domain.models.UserApp;
+import br.com.rsanme.controlegastos.auth.domain.services.impl.UserAppService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

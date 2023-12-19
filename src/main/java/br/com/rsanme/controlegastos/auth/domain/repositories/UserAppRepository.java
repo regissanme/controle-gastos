@@ -1,6 +1,6 @@
-package br.com.rsanme.controlegastos.repositories;
+package br.com.rsanme.controlegastos.auth.domain.repositories;
 
-import br.com.rsanme.controlegastos.models.UserApp;
+import br.com.rsanme.controlegastos.auth.domain.models.UserApp;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

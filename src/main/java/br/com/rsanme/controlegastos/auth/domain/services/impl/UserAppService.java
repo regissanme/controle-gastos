@@ -1,9 +1,10 @@
-package br.com.rsanme.controlegastos.services.impl;
+package br.com.rsanme.controlegastos.auth.domain.services.impl;
 
+import br.com.rsanme.controlegastos.auth.domain.services.IUserCrudService;
 import br.com.rsanme.controlegastos.exceptions.CustomEntityAlreadyExistsException;
 import br.com.rsanme.controlegastos.exceptions.CustomEntityNotFoundException;
-import br.com.rsanme.controlegastos.models.UserApp;
-import br.com.rsanme.controlegastos.repositories.UserAppRepository;
+import br.com.rsanme.controlegastos.auth.domain.models.UserApp;
+import br.com.rsanme.controlegastos.auth.domain.repositories.UserAppRepository;
 import br.com.rsanme.controlegastos.services.ICrudService;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,7 @@ import java.util.List;
  * Hora: 17:36
  */
 @Service
-public class UserAppService implements ICrudService<UserApp> {
+public class UserAppService implements IUserCrudService {
 
     private final UserAppRepository repository;
 

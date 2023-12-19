@@ -1,6 +1,6 @@
-package br.com.rsanme.controlegastos.dtos;
+package br.com.rsanme.controlegastos.auth.domain.dtos;
 
-import br.com.rsanme.controlegastos.models.UserApp;
+import br.com.rsanme.controlegastos.auth.domain.models.UserApp;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
