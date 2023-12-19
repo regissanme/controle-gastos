@@ -1,11 +1,11 @@
 package br.com.rsanme.controlegastos.auth.domain.services.impl;
 
+import br.com.rsanme.controlegastos.auth.domain.models.UserApp;
+import br.com.rsanme.controlegastos.auth.domain.repositories.UserAppRepository;
 import br.com.rsanme.controlegastos.auth.domain.services.IUserCrudService;
 import br.com.rsanme.controlegastos.exceptions.CustomEntityAlreadyExistsException;
 import br.com.rsanme.controlegastos.exceptions.CustomEntityNotFoundException;
-import br.com.rsanme.controlegastos.auth.domain.models.UserApp;
-import br.com.rsanme.controlegastos.auth.domain.repositories.UserAppRepository;
-import br.com.rsanme.controlegastos.services.ICrudService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -21,9 +21,11 @@ import java.util.List;
 public class UserAppService implements IUserCrudService {
 
     private final UserAppRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserAppService(UserAppRepository repository) {
+    public UserAppService(UserAppRepository repository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -44,6 +46,7 @@ public class UserAppService implements IUserCrudService {
 
         usernameExists(userApp);
 
+        userApp.setPassword(passwordEncoder.encode(userApp.getPassword()));
         userApp.setRole("ROLE_USER");
         userApp.setActive(true);
         userApp.setCreatedAt(LocalDateTime.now());
@@ -61,6 +64,10 @@ public class UserAppService implements IUserCrudService {
         toUpdate.setUsername(userApp.getUsername());
         toUpdate.setBirthDate(userApp.getBirthDate());
         toUpdate.setUpdatedAt(LocalDateTime.now());
+
+        if (!toUpdate.getPassword().equals(userApp.getPassword())) {
+            toUpdate.setPassword(passwordEncoder.encode(userApp.getPassword()));
+        }
 
         return repository.save(toUpdate);
     }
@@ -81,6 +88,13 @@ public class UserAppService implements IUserCrudService {
         UserApp toDisable = findById(id);
         toDisable.setActive(true);
         update(toDisable);
+    }
+
+    @Override
+    public void setLastAccessAt(UserApp userApp) {
+        userApp.setLastAccessAt(userApp.getCurrentAccessAt());
+        userApp.setCurrentAccessAt(LocalDateTime.now());
+        repository.save(userApp);
     }
 
     private void usernameExists(UserApp userApp) {
