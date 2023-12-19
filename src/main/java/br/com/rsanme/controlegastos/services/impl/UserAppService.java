@@ -5,6 +5,7 @@ import br.com.rsanme.controlegastos.exceptions.CustomEntityNotFoundException;
 import br.com.rsanme.controlegastos.models.UserApp;
 import br.com.rsanme.controlegastos.repositories.UserAppRepository;
 import br.com.rsanme.controlegastos.services.ICrudService;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
  * Data: 16/12/2023
  * Hora: 17:36
  */
+@Service
 public class UserAppService implements ICrudService<UserApp> {
 
     private final UserAppRepository repository;
@@ -42,6 +44,7 @@ public class UserAppService implements ICrudService<UserApp> {
         usernameExists(userApp);
 
         userApp.setRole("ROLE_USER");
+        userApp.setActive(true);
         userApp.setCreatedAt(LocalDateTime.now());
 
         return repository.save(userApp);
@@ -52,13 +55,13 @@ public class UserAppService implements ICrudService<UserApp> {
         UserApp toUpdate = findById(userApp.getId());
         usernameExists(userApp);
 
-        userApp.setCpf(userApp.getCpf());
-        userApp.setCreatedAt(toUpdate.getCreatedAt());
-        userApp.setLastAccessAt(toUpdate.getLastAccessAt());
-        userApp.setCurrentAccessAt(toUpdate.getCurrentAccessAt());
-        userApp.setUpdatedAt(LocalDateTime.now());
+       toUpdate.setName(userApp.getName());
+       toUpdate.setPassword(userApp.getPassword());
+       toUpdate.setUsername(userApp.getUsername());
+       toUpdate.setBirthDate(userApp.getBirthDate());
+       toUpdate.setUpdatedAt(LocalDateTime.now());
 
-        return null;
+        return repository.save(toUpdate);
     }
 
     @Override
