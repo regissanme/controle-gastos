@@ -55,11 +55,11 @@ public class UserAppService implements ICrudService<UserApp> {
         UserApp toUpdate = findById(userApp.getId());
         usernameExists(userApp);
 
-       toUpdate.setName(userApp.getName());
-       toUpdate.setPassword(userApp.getPassword());
-       toUpdate.setUsername(userApp.getUsername());
-       toUpdate.setBirthDate(userApp.getBirthDate());
-       toUpdate.setUpdatedAt(LocalDateTime.now());
+        toUpdate.setName(userApp.getName());
+        toUpdate.setPassword(userApp.getPassword());
+        toUpdate.setUsername(userApp.getUsername());
+        toUpdate.setBirthDate(userApp.getBirthDate());
+        toUpdate.setUpdatedAt(LocalDateTime.now());
 
         return repository.save(toUpdate);
     }

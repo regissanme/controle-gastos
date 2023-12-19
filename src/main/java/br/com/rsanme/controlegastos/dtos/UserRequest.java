@@ -3,10 +3,8 @@ package br.com.rsanme.controlegastos.dtos;
 import br.com.rsanme.controlegastos.models.UserApp;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 /**
  * Projeto: controle-gastos
@@ -33,7 +31,7 @@ public class UserRequest {
 
     private LocalDate birthDate;
 
-    public UserApp toModel(){
+    public UserApp toModel() {
         UserApp userApp = new UserApp();
         userApp.setId(id);
         userApp.setUsername(username);

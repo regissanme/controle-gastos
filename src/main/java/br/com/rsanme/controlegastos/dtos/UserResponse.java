@@ -1,13 +1,11 @@
 package br.com.rsanme.controlegastos.dtos;
 
 import br.com.rsanme.controlegastos.models.UserApp;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 /**
