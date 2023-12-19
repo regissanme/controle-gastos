@@ -61,7 +61,7 @@ public class UserAppController {
         return ResponseEntity.ok("Ativação com sucesso do Usuário com id: " + id);
     }
 
-    @PutMapping("/enable/{id}")
+    @PutMapping("/disable/{id}")
     public ResponseEntity<String> disableUser(@PathVariable Long id) {
         service.disableUser(id);
         return ResponseEntity.ok("Desativação com sucesso do Usuário com id: " + id);
