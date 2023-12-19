@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Past;
 import lombok.*;
 import org.hibernate.validator.constraints.br.CPF;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
@@ -52,7 +53,7 @@ public class UserApp {
     private Boolean active;
 
     @Past(message = "A data de nascimento deve ser anterior a data atual!")
-    private Date birthDate;
+    private LocalDate birthDate;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

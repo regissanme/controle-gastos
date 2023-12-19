@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -24,7 +25,7 @@ public class UserResponse {
     private String cpf;
     private String role;
     private Boolean active;
-    private Date birthDate;
+    private LocalDate birthDate;
     private LocalDateTime lastAccessAt;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -37,7 +38,7 @@ public class UserResponse {
         response.setUsername(userApp.getUsername());
         response.setName(userApp.getName());
         response.setCpf(userApp.getCpf());
-        response.setRole(userApp.getRole());
+        response.setRole(userApp.getRole().replace("ROLE_", ""));
         response.setActive(userApp.getActive());
         response.setBirthDate(userApp.getBirthDate());
         response.setLastAccessAt(userApp.getLastAccessAt());

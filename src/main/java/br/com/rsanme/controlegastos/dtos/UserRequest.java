@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import org.hibernate.validator.constraints.br.CPF;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -30,7 +31,7 @@ public class UserRequest {
     @NotBlank(message = "O cpf é obrigatório!")
     private String cpf;
 
-    private Date birthDate;
+    private LocalDate birthDate;
 
     public UserApp toModel(){
         UserApp userApp = new UserApp();
