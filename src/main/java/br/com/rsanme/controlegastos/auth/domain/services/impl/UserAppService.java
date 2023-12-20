@@ -36,8 +36,7 @@ public class UserAppService implements IUserCrudService {
     @Override
     public UserApp findById(Long id) {
         return repository.findById(id).orElseThrow(
-                () -> new CustomEntityNotFoundException(
-                        String.format("Usuário com Id %s não encontrado!", id))
+                () -> new CustomEntityNotFoundException("Nenhum usuário encontrado com Id: " + id)
         );
     }
 
@@ -60,7 +59,6 @@ public class UserAppService implements IUserCrudService {
         usernameExists(userApp);
 
         toUpdate.setName(userApp.getName());
-        toUpdate.setPassword(userApp.getPassword());
         toUpdate.setUsername(userApp.getUsername());
         toUpdate.setBirthDate(userApp.getBirthDate());
         toUpdate.setUpdatedAt(LocalDateTime.now());
@@ -81,19 +79,24 @@ public class UserAppService implements IUserCrudService {
     public void disableUser(Long id) {
         UserApp toDisable = findById(id);
         toDisable.setActive(false);
-        update(toDisable);
+        toDisable.setUpdatedAt(LocalDateTime.now());
+        repository.save(toDisable);
     }
 
     public void enableUser(Long id) {
-        UserApp toDisable = findById(id);
-        toDisable.setActive(true);
-        update(toDisable);
+        UserApp toEnable = findById(id);
+        toEnable.setActive(true);
+        toEnable.setUpdatedAt(LocalDateTime.now());
+        repository.save(toEnable);
     }
 
     @Override
     public void setLastAccessAt(UserApp userApp) {
-        userApp.setLastAccessAt(userApp.getCurrentAccessAt());
-        userApp.setCurrentAccessAt(LocalDateTime.now());
+        UserApp toSave = findById(userApp.getId());
+
+        toSave.setLastAccessAt(userApp.getCurrentAccessAt());
+        toSave.setCurrentAccessAt(LocalDateTime.now());
+
         repository.save(userApp);
     }
 
@@ -101,7 +104,7 @@ public class UserAppService implements IUserCrudService {
         UserApp byUsername = (UserApp) repository.findByUsername(userApp.getUsername());
         if (byUsername != null && !byUsername.getId().equals(userApp.getId())) {
             throw new CustomEntityAlreadyExistsException(
-                    String.format("Já existe um usuário com username %s", userApp.getUsername())
+                    "Já existe um usuário com username: " + userApp.getUsername()
             );
         }
     }
