@@ -50,14 +50,14 @@ public class UserApp implements UserDetails {
     @Column(nullable = false)
     private String cpf;
 
-    @Column(nullable = false)
-    private String role;
+    @Past(message = "A data de nascimento deve ser anterior a data atual!")
+    private LocalDate birthDate;
 
     @Column(columnDefinition = "boolean default true")
     private Boolean active;
 
-    @Past(message = "A data de nascimento deve ser anterior a data atual!")
-    private LocalDate birthDate;
+    @Column(nullable = false)
+    private String role;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -84,21 +84,21 @@ public class UserApp implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return active;
+        return this.active;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return active;
+        return this.active;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return active;
+        return this.active;
     }
 
     @Override
     public boolean isEnabled() {
-        return active;
+        return this.active;
     }
 }
