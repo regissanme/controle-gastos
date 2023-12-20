@@ -39,6 +39,7 @@ public class UserAppMock {
         userApp.setCpf(CPF);
         userApp.setBirthDate(BIRTHDATE);
         userApp.setRole(ROLE);
+        userApp.setActive(ACTIVE);
 
         return userApp;
     }
@@ -47,6 +48,22 @@ public class UserAppMock {
         UserApp toSave = getUserApp();
         toSave.setId(0L);
         return toSave;
+    }
+
+    public static UserApp userAppToUpdate() {
+        return new UserApp(
+                ID,
+                USERNAME,
+                "new password",
+                NAME,
+                CPF,
+                BIRTHDATE,
+                ACTIVE,
+                ROLE,
+                CREATED_AT,
+                UPDATE_AT,
+                LAST_ACCESS_AT,
+                CURRENT_ACCESS_AT);
     }
 
 }
