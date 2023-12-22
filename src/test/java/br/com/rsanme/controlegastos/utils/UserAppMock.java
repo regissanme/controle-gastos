@@ -1,5 +1,6 @@
 package br.com.rsanme.controlegastos.utils;
 
+import br.com.rsanme.controlegastos.auth.domain.dtos.UserRequest;
 import br.com.rsanme.controlegastos.auth.domain.models.UserApp;
 
 import java.time.LocalDate;
@@ -27,6 +28,8 @@ public class UserAppMock {
     public static final LocalDateTime CURRENT_ACCESS_AT = LocalDateTime.now();
     public static final String ERROR_MESSAGE_ALREADY_EXISTS = "Já existe um usuário com username: " + USERNAME;
     public static final String ERROR_MESSAGE_NOT_FOUND = "Nenhum usuário encontrado com Id: " + ID;
+    public static final String ENABLE_SUCCESS_MESSAGE = "Ativação com sucesso do Usuário com id: " + ID;
+    public static final String DISABLE_SUCCESS_MESSAGE = "Desativação com sucesso do Usuário com id: " + ID;
     public static final String ERRO_INVALID_DATA = "Dados inválidos!";
 
     public static UserApp getUserApp() {
@@ -64,6 +67,23 @@ public class UserAppMock {
                 UPDATE_AT,
                 LAST_ACCESS_AT,
                 CURRENT_ACCESS_AT);
+    }
+
+    public static UserRequest getRequest() {
+        UserRequest request = new UserRequest();
+        request.setUsername(USERNAME);
+        request.setPassword(PASSWORD);
+        request.setName(NAME);
+        request.setCpf(CPF);
+        request.setBirthDate(BIRTHDATE);
+
+        return request;
+    }
+
+    public static UserRequest getRequestToUpdate() {
+        UserRequest request = getRequest();
+        request.setId(ID);
+        return request;
     }
 
 }
