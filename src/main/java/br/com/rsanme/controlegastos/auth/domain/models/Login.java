@@ -1,7 +1,9 @@
 package br.com.rsanme.controlegastos.auth.domain.models;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Projeto: controle-gastos
@@ -10,6 +12,8 @@ import lombok.Data;
  * Hora: 17:06
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Login {
 
     @NotBlank(message = "O usuário é obrigatório!")
