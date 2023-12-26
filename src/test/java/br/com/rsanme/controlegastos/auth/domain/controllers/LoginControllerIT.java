@@ -79,7 +79,7 @@ class LoginControllerIT {
     }
 
     @Test
-    void whenLoginThenReturnForbidden() throws Exception {
+    void whenLoginThenReturnUserNotFound() throws Exception {
 
         String forbiddenLogin = objectMapper.writeValueAsString(LoginMock.getBadCredentialsLogin());
 
@@ -90,7 +90,7 @@ class LoginControllerIT {
                                 .content(forbiddenLogin)
                 )
                 .andDo(print())
-                .andExpect(status().isForbidden());
+                .andExpect(status().isNotFound());
     }
 
     @Test

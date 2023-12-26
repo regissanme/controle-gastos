@@ -27,10 +27,7 @@ public class TipoDespesaMock {
     }
 
     public static TipoDespesa getTipoDespesaToSave() {
-        TipoDespesa tipoDespesa = getTipoDespesa();
-        tipoDespesa.setId(null);
-
-        return tipoDespesa;
+        return new TipoDespesa(null, DESCRICAO_COMBUSTIVEL, CategoriaDespesaMock.getCategoriaDespesa());
     }
 
     public static TipoDespesa getTipoDespesaToUpdate() {
@@ -47,16 +44,10 @@ public class TipoDespesaMock {
         toSave.setDescricao(DESCRICAO_COMBUSTIVEL);
         toSave.setCategoriaDespesaId(ID);
 
-        System.out.println("toSave:" + toSave);
-
         return toSave;
     }
 
     public static TipoDespesaRequest getTipoDespesaRequestToUpdate() {
-        TipoDespesaRequest tipoDespesa = getTipoDespesaRequestToSave();
-        tipoDespesa.setId(2L);
-
-
-        return tipoDespesa;
+        return new TipoDespesaRequest(2L, DESCRICAO_COMBUSTIVEL, ID);
     }
 }

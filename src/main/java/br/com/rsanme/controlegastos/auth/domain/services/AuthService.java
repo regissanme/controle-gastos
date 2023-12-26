@@ -1,9 +1,9 @@
 package br.com.rsanme.controlegastos.auth.domain.services;
 
 import br.com.rsanme.controlegastos.auth.domain.repositories.UserAppRepository;
+import br.com.rsanme.controlegastos.exceptions.CustomUsernameNotFoundException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -22,10 +22,10 @@ public class AuthService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws CustomUsernameNotFoundException {
         UserDetails user = repository.findByUsername(username);
         if (user == null) {
-            throw new UsernameNotFoundException("Não encontrado nenhum usuário com o username: " + username);
+            throw new CustomUsernameNotFoundException("Não encontrado nenhum usuário com o username: " + username);
         }
         return user;
     }

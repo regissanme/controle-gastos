@@ -34,10 +34,14 @@ public class CategoriaDespesaMock {
     }
 
     public static CategoriaDespesa getCategoriaDespesaToSave() {
-        CategoriaDespesa toSave = getCategoriaDespesa();
-        toSave.setId(null);
+        TipoDespesa tipoDespesa = new TipoDespesa();
+        tipoDespesa.setId(ID);
 
-        return toSave;
+        return new CategoriaDespesa(
+                null,
+                CATEGORIA_DESC_TRANSPORTE,
+                List.of(tipoDespesa)
+        );
     }
 
     public static CategoriaDespesa getCategoriaDespesaToUpdate() {

@@ -32,10 +32,13 @@ public class DespesaMock {
     }
 
     public static Despesa getDespesaToSave() {
-        Despesa despesa = getDespesa();
-        despesa.setId(null);
-
-        return despesa;
+        return new Despesa(null,
+                MES,
+                VALOR,
+                DESCRICAO_DESPESA,
+                TipoPagamentoMock.getTipoPagamento(),
+                TipoDespesaMock.getTipoDespesa()
+        );
     }
 
     public static Despesa getDespesaToUpdate() {
@@ -57,9 +60,6 @@ public class DespesaMock {
     }
 
     public static DespesaRequest getDespesaRequestToUpdate() {
-        DespesaRequest toUpdate = getDespesaRequestToSave();
-        toUpdate.setId(2L);
-
-        return toUpdate;
+        return new DespesaRequest(2L, MES, VALOR, DESCRICAO_DESPESA, ID, ID);
     }
 }

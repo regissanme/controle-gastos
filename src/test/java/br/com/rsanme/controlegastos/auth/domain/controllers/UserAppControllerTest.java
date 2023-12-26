@@ -71,6 +71,22 @@ class UserAppControllerTest {
     }
 
     @Test
+    void whenFindUserByIdThenReturnInstance() {
+
+        Mockito.when(service.findById(anyLong())).thenReturn(userApp);
+
+        given()
+                .when()
+                .get(API_URL + UserAppMock.ID)
+                .then()
+                .log().ifValidationFails()
+                .statusCode(HttpStatus.OK.value());
+
+        verify(service).findById(anyLong());
+        verifyNoMoreInteractions(service);
+    }
+
+    @Test
     void whenCreateUserThenReturnCreated() {
 
         when(service.create(any(UserApp.class))).thenReturn(userApp);
