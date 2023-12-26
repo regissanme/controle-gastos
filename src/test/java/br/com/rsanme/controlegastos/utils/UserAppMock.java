@@ -14,11 +14,14 @@ import java.time.LocalDateTime;
  */
 public class UserAppMock {
 
-    public static final Long ID = 1L;
-    public static final String USERNAME = "user01";
-    public static final String PASSWORD = "user01password";
-    public static final String NAME = "User 01";
-    public static final String CPF = "11122233344";
+    public static final Long ID = 3L;
+    public static final String USERNAME = "user02";
+    public static final String USERNAME_ADMIN = "regis";
+    public static final String USERNAME_ALREADY_EXISTS = "user01";
+    public static final String PASSWORD = "user02password";
+    public static final String PASSWORD_ADMIN = "subsanme";
+    public static final String NAME = "User 02";
+    public static final String CPF = "86039598115";
     public static final LocalDate BIRTHDATE = LocalDate.of(1978, 11, 14);
     public static final String ROLE = "ROLE_USER";
     public static final Boolean ACTIVE = true;
@@ -67,6 +70,14 @@ public class UserAppMock {
                 UPDATE_AT,
                 LAST_ACCESS_AT,
                 CURRENT_ACCESS_AT);
+    }
+
+    public static UserApp getAdminUser() {
+        UserApp admin = getUserApp();
+        admin.setUsername(USERNAME_ADMIN);
+        admin.setPassword(PASSWORD_ADMIN);
+        admin.setRole("ROLE_ADMIN");
+        return admin;
     }
 
     public static UserRequest getRequest() {
