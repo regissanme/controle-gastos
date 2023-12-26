@@ -34,7 +34,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        String apiV1 = "api/v1/";
+        String apiV1 = "/api/v1/";
 
         return http
                 .csrf(AbstractHttpConfigurer::disable)
