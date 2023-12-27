@@ -1,7 +1,6 @@
 package br.com.rsanme.controlegastos.controllers;
 
 import br.com.rsanme.controlegastos.models.CategoriaDespesa;
-import br.com.rsanme.controlegastos.models.TipoDespesa;
 import br.com.rsanme.controlegastos.services.impl.CategoriaDespesaService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

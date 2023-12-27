@@ -13,11 +13,18 @@ import java.util.List;
 public interface IUserCrudService {
 
     List<UserApp> findAll();
+
     UserApp findById(Long id);
+
     UserApp create(UserApp userApp);
+
     UserApp update(UserApp userApp);
+
     void delete(Long id);
+
     void disableUser(Long id);
+
     void enableUser(Long id);
+
     void setLastAccessAt(UserApp userApp);
 }

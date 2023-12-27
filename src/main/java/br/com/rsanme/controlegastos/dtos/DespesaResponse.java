@@ -1,9 +1,6 @@
 package br.com.rsanme.controlegastos.dtos;
 
 import br.com.rsanme.controlegastos.models.Despesa;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -45,7 +42,7 @@ public class DespesaResponse {
         return response;
     }
 
-    public static List<DespesaResponse> toListResponse(List<Despesa> despesas){
+    public static List<DespesaResponse> toListResponse(List<Despesa> despesas) {
         return despesas.
                 stream()
                 .map(DespesaResponse::toResponse)
