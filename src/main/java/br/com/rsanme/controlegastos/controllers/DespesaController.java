@@ -1,12 +1,15 @@
 package br.com.rsanme.controlegastos.controllers;
 
 import br.com.rsanme.controlegastos.dtos.DespesaRequest;
+import br.com.rsanme.controlegastos.dtos.DespesaResponse;
 import br.com.rsanme.controlegastos.models.Despesa;
 import br.com.rsanme.controlegastos.services.impl.DespesaService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,24 +31,30 @@ public class DespesaController {
         this.service = service;
     }
 
-    @GetMapping
-    public ResponseEntity<List<Despesa>> findAll() {
-        return ResponseEntity.ok(service.findAll());
+    @GetMapping("/all/{userId}")
+    @PreAuthorize("#userId == authentication.principal.id")
+    public ResponseEntity<List<DespesaResponse>> findAll(@PathVariable Long userId) {
+        return ResponseEntity.ok(DespesaResponse.toListResponse(service.findAll(userId)));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Despesa> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(service.findById(id));
+    @PostAuthorize("returnObject.body.userId == authentication.principal.id")
+    public ResponseEntity<DespesaResponse> findById(@PathVariable Long id) {
+        Despesa despesa = service.findById(id);
+        return ResponseEntity.ok(DespesaResponse.toResponse(despesa));
     }
 
     @PostMapping
-    public ResponseEntity<Despesa> create(@RequestBody @Valid DespesaRequest toCreate) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.create(toCreate.toModel()));
+    @PreAuthorize("#toCreate.userId == authentication.principal.id")
+    public ResponseEntity<DespesaResponse> create(@RequestBody @Valid DespesaRequest toCreate) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(DespesaResponse.toResponse(service.create(toCreate.toModel())));
     }
 
     @PutMapping
-    public ResponseEntity<Despesa> update(@RequestBody @Valid DespesaRequest toUpdate) {
-        return ResponseEntity.ok(service.update(toUpdate.toModel()));
+    @PreAuthorize("#toUpdate.userId == authentication.principal.id")
+    public ResponseEntity<DespesaResponse> update(@RequestBody @Valid DespesaRequest toUpdate) {
+        return ResponseEntity.ok(DespesaResponse.toResponse(service.update(toUpdate.toModel())));
     }
 
     @DeleteMapping("/{id}")
