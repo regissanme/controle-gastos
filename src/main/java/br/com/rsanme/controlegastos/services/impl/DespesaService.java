@@ -1,5 +1,6 @@
 package br.com.rsanme.controlegastos.services.impl;
 
+import br.com.rsanme.controlegastos.exceptions.BusinessException;
 import br.com.rsanme.controlegastos.exceptions.CustomEntityNotFoundException;
 import br.com.rsanme.controlegastos.models.Despesa;
 import br.com.rsanme.controlegastos.repositories.DespesaRepository;
@@ -25,7 +26,15 @@ public class DespesaService implements ICrudService<Despesa> {
 
     @Override
     public List<Despesa> findAll() {
-        return repository.findAll();
+        throw new BusinessException("É necessário informar um usuário para buscar as despesas!");
+    }
+
+    public List<Despesa> findAll(Long userId) {
+
+        if (userId == null || userId == 0) {
+            throw new BusinessException("É necessário informar um usuário para buscar as despesas!");
+        }
+        return repository.findAllByUserId(userId);
     }
 
     @Override

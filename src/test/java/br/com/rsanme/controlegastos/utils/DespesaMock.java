@@ -27,6 +27,7 @@ public class DespesaMock {
         despesa.setDescricao(DESCRICAO_DESPESA);
         despesa.setTipoPagamento(TipoPagamentoMock.getTipoPagamento());
         despesa.setTipoDespesa(TipoDespesaMock.getTipoDespesa());
+        despesa.setUser(UserAppMock.getAdminUser());
 
         return despesa;
     }
@@ -37,7 +38,8 @@ public class DespesaMock {
                 VALOR,
                 DESCRICAO_DESPESA,
                 TipoPagamentoMock.getTipoPagamento(),
-                TipoDespesaMock.getTipoDespesa()
+                TipoDespesaMock.getTipoDespesa(),
+                UserAppMock.getAdminUser()
         );
     }
 
@@ -55,11 +57,12 @@ public class DespesaMock {
         toSave.setDescricao(DESCRICAO_DESPESA);
         toSave.setTipoDespesaId(ID);
         toSave.setTipoPagamentoId(ID);
+        toSave.setUserId(ID);
 
         return toSave;
     }
 
     public static DespesaRequest getDespesaRequestToUpdate() {
-        return new DespesaRequest(2L, MES, VALOR, DESCRICAO_DESPESA, ID, ID);
+        return new DespesaRequest(2L, MES, VALOR, DESCRICAO_DESPESA, ID, ID, ID);
     }
 }

@@ -1,5 +1,6 @@
 package br.com.rsanme.controlegastos.dtos;
 
+import br.com.rsanme.controlegastos.auth.domain.models.UserApp;
 import br.com.rsanme.controlegastos.models.Despesa;
 import br.com.rsanme.controlegastos.models.TipoDespesa;
 import br.com.rsanme.controlegastos.models.TipoPagamento;
@@ -40,12 +41,18 @@ public class DespesaRequest {
     @NotNull
     private Long tipoDespesaId;
 
+    @NotNull
+    private Long userId;
+
     public Despesa toModel() {
         TipoDespesa tipoDespesa = new TipoDespesa();
         tipoDespesa.setId(tipoDespesaId);
 
         TipoPagamento tipoPagamento = new TipoPagamento();
         tipoPagamento.setId(tipoPagamentoId);
+
+        UserApp userApp = new UserApp();
+        userApp.setId(userId);
 
         Despesa despesa = new Despesa();
         despesa.setId(id);
@@ -54,6 +61,7 @@ public class DespesaRequest {
         despesa.setDescricao(descricao);
         despesa.setTipoDespesa(tipoDespesa);
         despesa.setTipoPagamento(tipoPagamento);
+        despesa.setUser(userApp);
 
         return despesa;
     }

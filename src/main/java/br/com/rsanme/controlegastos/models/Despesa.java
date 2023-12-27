@@ -1,5 +1,6 @@
 package br.com.rsanme.controlegastos.models;
 
+import br.com.rsanme.controlegastos.auth.domain.models.UserApp;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
@@ -47,6 +48,10 @@ public class Despesa {
     @ManyToOne
     private TipoDespesa tipoDespesa;
 
+    @NotNull
+    @ManyToOne
+    private UserApp user;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -68,6 +73,7 @@ public class Despesa {
                 ", valor=" + valor +
                 ", tipoPagamento=" + tipoPagamento +
                 ", tipoDespesa=" + tipoDespesa +
+                ", user=" + user.getId() +
                 '}';
     }
 }
