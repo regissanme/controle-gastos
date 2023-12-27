@@ -34,7 +34,7 @@ public class DespesaController {
     @GetMapping("/all/{userId}")
     @PreAuthorize("#userId == authentication.principal.id")
     public ResponseEntity<List<DespesaResponse>> findAll(@PathVariable Long userId) {
-        return ResponseEntity.ok(DespesaResponse.toListResponse(service.findAll(userId)));
+        return ResponseEntity.ok(DespesaResponse.toListResponse(service.findAllByUser(userId)));
     }
 
     @GetMapping("/{id}")

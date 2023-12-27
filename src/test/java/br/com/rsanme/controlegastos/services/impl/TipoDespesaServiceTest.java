@@ -61,6 +61,17 @@ class TipoDespesaServiceTest {
     }
 
     @Test
+    void whenFindAllExpensiveTypeByUserIdThenReturnEmptyList() {
+
+        List<TipoDespesa> listResponse = service.findAllByUser(1L);
+
+        assertNotNull(listResponse);
+        assertEquals(0, listResponse.size());
+
+        verify(repository, never()).findAll();
+    }
+
+    @Test
     void whenFindByIdThenReturnInstance() {
 
         when(repository.findById(anyLong())).thenReturn(Optional.of(tipoDespesa));

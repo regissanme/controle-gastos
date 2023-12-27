@@ -2,6 +2,7 @@ package br.com.rsanme.controlegastos.services;
 
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -13,9 +14,19 @@ import java.util.List;
 @Service
 public interface ICrudService<T> {
 
-    List<T> findAll();
+    default List<T> findAll() {
+        return Collections.emptyList();
+    }
+
     T findById(Long id);
+
     T create(T t);
+
     T update(T t);
+
     void delete(Long id);
+
+    default List<T> findAllByUser(Long userId) {
+        return Collections.emptyList();
+    }
 }

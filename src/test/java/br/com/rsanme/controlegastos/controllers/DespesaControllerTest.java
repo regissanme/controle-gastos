@@ -1,6 +1,7 @@
 package br.com.rsanme.controlegastos.controllers;
 
 import br.com.rsanme.controlegastos.dtos.DespesaRequest;
+import br.com.rsanme.controlegastos.exceptions.BusinessException;
 import br.com.rsanme.controlegastos.exceptions.CustomEntityNotFoundException;
 import br.com.rsanme.controlegastos.exceptions.handlers.CustomApiExceptionHandler;
 import br.com.rsanme.controlegastos.models.Despesa;
@@ -52,23 +53,40 @@ class DespesaControllerTest {
     }
 
     @Test
-    void whenFindAllExpanseCategoryThenReturnList() {
+    void whenFindAllExpanseByUserIdThenReturnList() {
 
-        when(service.findAll()).thenReturn(List.of(despesa));
+        when(service.findAllByUser(anyLong())).thenReturn(List.of(despesa));
 
         given()
                 .when()
-                .get(API_URL)
+                .get(API_URL + "/all/1")
                 .then()
                 .log().ifValidationFails()
                 .statusCode(OK.value());
 
-        verify(service).findAll();
+        verify(service).findAllByUser(anyLong());
         verifyNoMoreInteractions(service);
     }
 
     @Test
-    void whenFindByIdExpanseCategoryThenReturnSuccess() {
+    void whenFindAllExpanseByUserIdThenReturnBadRequest() {
+
+        when(service.findAllByUser(0L))
+                .thenThrow(new BusinessException(DespesaMock.ERROR_MESSAGE_BUSINESS_EXCEPTION));
+
+        given()
+                .when()
+                .get(API_URL + "/all/0")
+                .then()
+                .log().ifValidationFails()
+                .statusCode(BAD_REQUEST.value());
+
+        verify(service).findAllByUser(anyLong());
+        verifyNoMoreInteractions(service);
+    }
+
+    @Test
+    void whenFindByIdExpanseThenReturnSuccess() {
 
         when(service.findById(anyLong())).thenReturn(despesa);
 
@@ -84,7 +102,7 @@ class DespesaControllerTest {
     }
 
     @Test
-    void whenFindByIdExpanseCategoryThenReturnNotFound() {
+    void whenFindByIdExpanseThenReturnNotFound() {
 
         when(service.findById(anyLong()))
                 .thenThrow(new CustomEntityNotFoundException(DespesaMock.ERROR_MESSAGE_NOT_FOUND));
@@ -101,7 +119,7 @@ class DespesaControllerTest {
     }
 
     @Test
-    void whenFindByIdExpanseCategoryThenReturnBadRequest() {
+    void whenFindByIdExpanseThenReturnBadRequest() {
 
         given()
                 .when()
@@ -115,7 +133,7 @@ class DespesaControllerTest {
     }
 
     @Test
-    void whenCreateExpanseCategoryThenReturnCreated() {
+    void whenCreateExpanseThenReturnCreated() {
 
         when(service.create(any(Despesa.class))).thenReturn(despesa);
 
@@ -134,7 +152,7 @@ class DespesaControllerTest {
     }
 
     @Test
-    void whenCreateExpanseCategoryThenReturnBadRequest() {
+    void whenCreateExpanseThenReturnBadRequest() {
 
         given()
                 .body("{}")
@@ -151,7 +169,7 @@ class DespesaControllerTest {
     }
 
     @Test
-    void whenUpdateExpanseCategoryThenReturnBadRequest() {
+    void whenUpdateExpanseThenReturnBadRequest() {
 
         given()
                 .body(new Despesa())
@@ -168,7 +186,7 @@ class DespesaControllerTest {
     }
 
     @Test
-    void whenUpdateExpanseCategoryThenReturnSuccess() {
+    void whenUpdateExpanseThenReturnSuccess() {
 
         when(service.update(any(Despesa.class))).thenReturn(despesa);
 
@@ -187,7 +205,7 @@ class DespesaControllerTest {
     }
 
     @Test
-    void whenUpdateExpanseCategoryThenReturnNotFound() {
+    void whenUpdateExpanseThenReturnNotFound() {
 
         DespesaRequest toUpdate = DespesaMock.getDespesaRequestToUpdate();
         toUpdate.setId(2L);
@@ -210,7 +228,7 @@ class DespesaControllerTest {
     }
 
     @Test
-    void whenDeleteExpanseCategoryThenReturnSuccess() {
+    void whenDeleteExpanseThenReturnSuccess() {
 
         given()
                 .accept(MediaType.APPLICATION_JSON)
@@ -226,7 +244,7 @@ class DespesaControllerTest {
     }
 
     @Test
-    void whenDeleteExpanseCategoryThenReturnBadRequest() {
+    void whenDeleteExpanseThenReturnBadRequest() {
 
         given()
                 .accept(MediaType.APPLICATION_JSON)

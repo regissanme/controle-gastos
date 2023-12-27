@@ -18,6 +18,7 @@ public class DespesaMock {
     public static final String DESCRICAO_DESPESA = "Gasto com combustível";
     public static final BigDecimal VALOR = new BigDecimal("200.54");
     public static final String ERROR_MESSAGE_NOT_FOUND = "Despesa não encontrada com Id: " + ID;
+        public static final String ERROR_MESSAGE_BUSINESS_EXCEPTION = "É necessário informar um usuário para buscar as despesas!";
 
     public static Despesa getDespesa() {
         Despesa despesa = new Despesa();

@@ -1,5 +1,6 @@
 package br.com.rsanme.controlegastos.services.impl;
 
+import br.com.rsanme.controlegastos.exceptions.BusinessException;
 import br.com.rsanme.controlegastos.exceptions.CustomEntityNotFoundException;
 import br.com.rsanme.controlegastos.models.Despesa;
 import br.com.rsanme.controlegastos.models.TipoDespesa;
@@ -45,17 +46,38 @@ class DespesaServiceTest {
     }
 
     @Test
-    void whenFindAllThenReturnList() {
+    void whenFindAllByUserIdThenReturnList() {
 
-        when(repository.findAll()).thenReturn(List.of(despesa));
+        when(repository.findAllByUserId(anyLong())).thenReturn(List.of(despesa));
 
-        List<Despesa> listResponse = service.findAll();
+        List<Despesa> listResponse = service.findAllByUser(1L);
 
         assertNotNull(listResponse);
         assertEquals(1, listResponse.size());
         assertEquals(Despesa.class, listResponse.get(0).getClass());
 
-        verify(repository).findAll();
+        verify(repository).findAllByUserId(anyLong());
+    }
+
+    @Test
+    void whenFindAllByUserIdThenThrowsBusinessException() {
+
+        assertThatThrownBy(() -> service.findAllByUser(0L))
+                .hasMessage(DespesaMock.ERROR_MESSAGE_BUSINESS_EXCEPTION)
+                .isInstanceOf(BusinessException.class);
+
+        verify(repository, never()).findAllByUserId(anyLong());
+    }
+
+    @Test
+    void whenFindAllThenReturnList() {
+
+        List<Despesa> listResponse = service.findAll();
+
+        assertNotNull(listResponse);
+        assertEquals(0, listResponse.size());
+
+        verify(repository, never()).findAll();
     }
 
     @Test
