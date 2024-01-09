@@ -10,8 +10,8 @@ import br.com.rsanme.controlegastos.auth.domain.models.Login;
  */
 public class LoginMock {
 
-    public static final String USERNAME = "regis";
-    public static final String PASSWORD = "subsanme";
+    public static final String USERNAME = "user01@email.com";
+    public static final String PASSWORD = "user01";
 
     public static Login getLogin() {
         Login login = new Login();

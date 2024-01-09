@@ -100,7 +100,6 @@ class UserAppServiceTest {
         assertEquals(UserAppMock.USERNAME, response.getUsername());
         assertEquals(UserAppMock.PASSWORD, response.getPassword());
         assertEquals(UserAppMock.NAME, response.getName());
-        assertEquals(UserAppMock.CPF, response.getCpf());
         assertEquals(UserAppMock.BIRTHDATE, response.getBirthDate());
         assertEquals(UserAppMock.ROLE, response.getRole());
         assertEquals(UserAppMock.ACTIVE, response.getActive());

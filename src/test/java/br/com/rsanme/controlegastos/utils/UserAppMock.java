@@ -15,13 +15,12 @@ import java.time.LocalDateTime;
 public class UserAppMock {
 
     public static final Long ID = 3L;
-    public static final String USERNAME = "user02";
-    public static final String USERNAME_ADMIN = "regis";
-    public static final String USERNAME_ALREADY_EXISTS = "user01";
-    public static final String PASSWORD = "user02password";
-    public static final String PASSWORD_ADMIN = "subsanme";
+    public static final String USERNAME = "user02@email.com";
+    public static final String USERNAME_ADMIN = "admin@email.com";
+    public static final String USERNAME_ALREADY_EXISTS = "user01@email.com";
+    public static final String PASSWORD = "user02";
+    public static final String PASSWORD_ADMIN = "admin01";
     public static final String NAME = "User 02";
-    public static final String CPF = "86039598115";
     public static final LocalDate BIRTHDATE = LocalDate.of(1978, 11, 14);
     public static final String ROLE = "ROLE_USER";
     public static final Boolean ACTIVE = true;
@@ -42,7 +41,6 @@ public class UserAppMock {
         userApp.setUsername(USERNAME);
         userApp.setPassword(PASSWORD);
         userApp.setName(NAME);
-        userApp.setCpf(CPF);
         userApp.setBirthDate(BIRTHDATE);
         userApp.setRole(ROLE);
         userApp.setActive(ACTIVE);
@@ -62,7 +60,6 @@ public class UserAppMock {
                 USERNAME,
                 "new password",
                 NAME,
-                CPF,
                 BIRTHDATE,
                 ACTIVE,
                 ROLE,
@@ -85,7 +82,6 @@ public class UserAppMock {
         request.setUsername(USERNAME);
         request.setPassword(PASSWORD);
         request.setName(NAME);
-        request.setCpf(CPF);
         request.setBirthDate(BIRTHDATE);
 
         return request;
