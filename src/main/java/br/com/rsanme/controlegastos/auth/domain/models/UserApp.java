@@ -1,10 +1,10 @@
 package br.com.rsanme.controlegastos.auth.domain.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
 import lombok.*;
-import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,7 +33,8 @@ public class UserApp implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "O nome de usuário é obrigatório!")
+    @NotBlank(message = "O email é obrigatório!")
+    @Email(message = "Insira um email válido!")
     @Column(nullable = false, unique = true)
     private String username;
 
@@ -44,11 +45,6 @@ public class UserApp implements UserDetails {
     @NotBlank(message = "O nome de usuário é obrigatório!")
     @Column(nullable = false)
     private String name;
-
-    @NotBlank(message = "O nome de usuário é obrigatório!")
-    @CPF(message = "CPF inválido!")
-    @Column(nullable = false)
-    private String cpf;
 
     @Past(message = "A data de nascimento deve ser anterior a data atual!")
     private LocalDate birthDate;
@@ -69,12 +65,12 @@ public class UserApp implements UserDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserApp userApp = (UserApp) o;
-        return Objects.equals(id, userApp.id) && Objects.equals(cpf, userApp.cpf);
+        return Objects.equals(id, userApp.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, cpf);
+        return Objects.hash(id);
     }
 
     @Override
@@ -101,4 +97,6 @@ public class UserApp implements UserDetails {
     public boolean isEnabled() {
         return this.active;
     }
+
+
 }

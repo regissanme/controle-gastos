@@ -1,6 +1,7 @@
 package br.com.rsanme.controlegastos.auth.domain.dtos;
 
 import br.com.rsanme.controlegastos.auth.domain.models.UserApp;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
@@ -17,7 +18,8 @@ public class UserRequest {
 
     private Long id;
 
-    @NotBlank(message = "O usuário é obrigatório!")
+    @NotBlank(message = "O email é obrigatório!")
+    @Email(message = "Insira um email válido!")
     private String username;
 
     @NotBlank(message = "A senha é obrigatória!")
@@ -25,9 +27,6 @@ public class UserRequest {
 
     @NotBlank(message = "O nome é obrigatório!")
     private String name;
-
-    @NotBlank(message = "O cpf é obrigatório!")
-    private String cpf;
 
     private LocalDate birthDate;
 
@@ -37,7 +36,6 @@ public class UserRequest {
         userApp.setUsername(username);
         userApp.setPassword(password);
         userApp.setName(name);
-        userApp.setCpf(cpf);
         userApp.setBirthDate(birthDate);
 
         return userApp;

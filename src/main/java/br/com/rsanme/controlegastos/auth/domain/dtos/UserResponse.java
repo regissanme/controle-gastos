@@ -20,7 +20,6 @@ public class UserResponse {
     private Long id;
     private String username;
     private String name;
-    private String cpf;
     private String role;
     private Boolean active;
     private LocalDate birthDate;
@@ -35,7 +34,6 @@ public class UserResponse {
         response.setId(userApp.getId());
         response.setUsername(userApp.getUsername());
         response.setName(userApp.getName());
-        response.setCpf(userApp.getCpf());
         response.setRole(userApp.getRole().replace("ROLE_", ""));
         response.setActive(userApp.getActive());
         response.setBirthDate(userApp.getBirthDate());
