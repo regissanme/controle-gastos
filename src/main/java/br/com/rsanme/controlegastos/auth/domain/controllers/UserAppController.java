@@ -34,19 +34,19 @@ public class UserAppController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(UserResponse.toResponse(service.findById(id), null));
+        return ResponseEntity.ok(UserResponse.toResponse(service.findById(id), null, null));
     }
 
     @PostMapping
     public ResponseEntity<UserResponse> create(@RequestBody @Valid UserRequest userRequest) {
         UserApp userApp = service.create(userRequest.toModel());
-        return ResponseEntity.status(HttpStatus.CREATED).body(UserResponse.toResponse(userApp, null));
+        return ResponseEntity.status(HttpStatus.CREATED).body(UserResponse.toResponse(userApp, null, null));
     }
 
     @PutMapping()
     public ResponseEntity<UserResponse> update(@RequestBody @Valid UserRequest userRequest) {
         UserApp userApp = service.update(userRequest.toModel());
-        return ResponseEntity.ok(UserResponse.toResponse(userApp, null));
+        return ResponseEntity.ok(UserResponse.toResponse(userApp, null, null));
     }
 
     @DeleteMapping("/{id}")

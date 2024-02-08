@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Date;
 
 /**
  * Projeto: controle-gastos
@@ -31,7 +32,7 @@ public class TokenService {
                 .withIssuer(issuer)
                 .withSubject(userApp.getUsername())
                 .withClaim("id", userApp.getId())
-                .withExpiresAt(getExpiration())
+                .withExpiresAt(toExpireAt())
                 .sign(Algorithm.HMAC256(secret));
     }
 
@@ -44,7 +45,16 @@ public class TokenService {
                 .getSubject();
     }
 
-    private Instant getExpiration() {
+    public Date getExpiration(String token) {
+        return JWT
+                .require(Algorithm.HMAC256(secret))
+                .withIssuer(issuer)
+                .build()
+                .verify(token)
+                .getExpiresAt();
+    }
+
+    private Instant toExpireAt() {
         return LocalDateTime
                 .now()
                 .plusHours(2L)

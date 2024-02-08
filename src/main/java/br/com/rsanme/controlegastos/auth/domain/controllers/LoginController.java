@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
+
 /**
  * Projeto: controle-gastos
  * Desenvolvedor: Reginaldo Santos de Medeiros (regissanme)
@@ -44,7 +46,8 @@ public class LoginController {
         var principal = (UserApp) authenticate.getPrincipal();
         userAppService.setLastAccessAt(principal);
         String token = tokenService.getToken(principal);
-        UserResponse response = UserResponse.toResponse(principal, token);
+        Date expiration = tokenService.getExpiration(token);
+        UserResponse response = UserResponse.toResponse(principal, token, expiration);
 
         return ResponseEntity.ok(response);
     }

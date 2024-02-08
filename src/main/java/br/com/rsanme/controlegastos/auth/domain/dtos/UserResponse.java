@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,7 +29,10 @@ public class UserResponse {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String token;
 
-    public static UserResponse toResponse(UserApp userApp, String token) {
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Date expiration;
+
+    public static UserResponse toResponse(UserApp userApp, String token, Date expiration) {
 
         UserResponse response = new UserResponse();
         response.setId(userApp.getId());
@@ -39,6 +43,7 @@ public class UserResponse {
         response.setBirthDate(userApp.getBirthDate());
         response.setLastAccessAt(userApp.getLastAccessAt());
         response.setToken(token);
+        response.setExpiration(expiration);
 
         return response;
     }
@@ -47,7 +52,7 @@ public class UserResponse {
         return allUsers
                 .stream()
                 .map(
-                        userApp -> toResponse(userApp, null)
+                        userApp -> toResponse(userApp, null, null)
                 ).toList();
     }
 }
