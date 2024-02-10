@@ -7,6 +7,8 @@ import br.com.rsanme.controlegastos.repositories.DespesaRepository;
 import br.com.rsanme.controlegastos.services.ICrudService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,6 +35,12 @@ public class DespesaService implements ICrudService<Despesa> {
         return repository.findAllByUserId(userId);
     }
 
+    public List<Despesa> findAllByUserAndYear(Long userId, Integer year){
+        LocalDate start = LocalDate.of(year, 1, 1);
+        LocalDate end = LocalDate.of(year, 12, 31);
+        return repository.findAllByUserIdAndDataBetween(userId, start, end);
+    }
+
     @Override
     public Despesa findById(Long id) {
         return repository.findById(id)
@@ -43,6 +51,19 @@ public class DespesaService implements ICrudService<Despesa> {
 
     @Override
     public Despesa create(Despesa despesa) {
+        if (despesa.getParcelas() > 1) {
+            List<Despesa> despesas = new ArrayList<>();
+            Despesa novaDespesa = null;
+            for (int i = 0; i < despesa.getParcelas(); i++) {
+                novaDespesa = despesa;
+                novaDespesa.setParcelaAtual(i+1);
+                novaDespesa.setData(despesa.getData().plusMonths(Integer.toUnsignedLong(i)));
+                despesas.add(novaDespesa);
+            }
+            repository.saveAll(despesas);
+            return null;
+        }
+        despesa.setParcelaAtual(1);
         return repository.save(despesa);
     }
 

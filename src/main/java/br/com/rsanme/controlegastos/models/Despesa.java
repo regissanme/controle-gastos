@@ -3,7 +3,7 @@ package br.com.rsanme.controlegastos.models;
 import br.com.rsanme.controlegastos.auth.domain.models.UserApp;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -30,13 +31,19 @@ public class Despesa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "O mês é obrigatório!")
+    @NotNull(message = "A data é obrigatória!")
     @Column(nullable = false)
-    private String mes;
+    private LocalDate data;
 
     @NotNull(message = "O valor precisa ser maior que 0 (zero)!")
     @DecimalMin(value = "0.01", message = "O valor precisa ser maior que 0 (zero)!")
     private BigDecimal valor;
+
+    @NotNull(message = "A quantidade de parcelas é obrigatória!")
+    @Min(value = 1, message = "A quantidade de parcelas deve ser maior ou igual a 1")
+    private Integer parcelas;
+
+    private Integer parcelaAtual;
 
     private String descricao;
 
@@ -69,7 +76,7 @@ public class Despesa {
     public String toString() {
         return "Despesa{" +
                 "id=" + id +
-                ", mes='" + mes + '\'' +
+                ", data='" + data + '\'' +
                 ", valor=" + valor +
                 ", tipoPagamento=" + tipoPagamento +
                 ", tipoDespesa=" + tipoDespesa +

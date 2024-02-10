@@ -4,6 +4,7 @@ import br.com.rsanme.controlegastos.models.Despesa;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -17,9 +18,13 @@ public class DespesaResponse {
 
     private Long id;
 
-    private String mes;
+    private LocalDate data;
 
     private BigDecimal valor;
+
+    private Integer parcelas;
+
+    private Integer parcelaAtual;
 
     private String descricao;
 
@@ -32,7 +37,9 @@ public class DespesaResponse {
     public static DespesaResponse toResponse(Despesa despesa) {
         DespesaResponse response = new DespesaResponse();
         response.setId(despesa.getId());
-        response.setMes(despesa.getMes());
+        response.setData(despesa.getData());
+        response.setParcelas(despesa.getParcelas());
+        response.setParcelaAtual(despesa.getParcelaAtual());
         response.setDescricao(despesa.getDescricao());
         response.setValor(despesa.getValor());
         response.setTipoDespesaId(despesa.getTipoDespesa().getId());

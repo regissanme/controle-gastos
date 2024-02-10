@@ -89,7 +89,7 @@ class DespesaServiceTest {
 
         assertNotNull(response);
         assertEquals(DespesaMock.ID, response.getId());
-        assertEquals(DespesaMock.MES, response.getMes());
+        assertEquals(DespesaMock.DATA, response.getData());
         assertEquals(DespesaMock.DESCRICAO_DESPESA, response.getDescricao());
         assertEquals(DespesaMock.VALOR, response.getValor());
         assertEquals(TipoDespesa.class, response.getTipoDespesa().getClass());
@@ -119,7 +119,7 @@ class DespesaServiceTest {
 
         assertNotNull(response);
         assertEquals(DespesaMock.ID, response.getId());
-        assertEquals(DespesaMock.MES, response.getMes());
+        assertEquals(DespesaMock.DATA, response.getData());
         assertEquals(DespesaMock.DESCRICAO_DESPESA, response.getDescricao());
         assertEquals(DespesaMock.VALOR, response.getValor());
         assertEquals(TipoDespesa.class, response.getTipoDespesa().getClass());
