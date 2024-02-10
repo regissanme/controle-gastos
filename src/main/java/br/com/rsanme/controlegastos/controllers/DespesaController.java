@@ -37,6 +37,12 @@ public class DespesaController {
         return ResponseEntity.ok(DespesaResponse.toListResponse(service.findAllByUser(userId)));
     }
 
+    @GetMapping("/all/{userId}/{year}")
+    @PreAuthorize("#userId == authentication.principal.id")
+    public ResponseEntity<List<DespesaResponse>> findAllByYear(@PathVariable Long userId, @PathVariable int year) {
+        return ResponseEntity.ok(DespesaResponse.toListResponse(service.findAllByUserAndYear(userId, year)));
+    }
+
     @GetMapping("/{id}")
     @PostAuthorize("returnObject.body.userId == authentication.principal.id")
     public ResponseEntity<DespesaResponse> findById(@PathVariable Long id) {
