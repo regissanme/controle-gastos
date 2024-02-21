@@ -55,13 +55,20 @@ public class DespesaService implements ICrudService<Despesa> {
             List<Despesa> despesas = new ArrayList<>();
             Despesa novaDespesa = null;
             for (int i = 0; i < despesa.getParcelas(); i++) {
-                novaDespesa = despesa;
+                novaDespesa = new Despesa();
+                novaDespesa.setId(despesa.getId());
+                novaDespesa.setParcelas(despesa.getParcelas());
+                novaDespesa.setValor(despesa.getValor());
+                novaDespesa.setDescricao(despesa.getDescricao());
+                novaDespesa.setTipoDespesa(despesa.getTipoDespesa());
+                novaDespesa.setTipoPagamento(despesa.getTipoPagamento());
+                novaDespesa.setUser(despesa.getUser());
                 novaDespesa.setParcelaAtual(i+1);
                 novaDespesa.setData(despesa.getData().plusMonths(Integer.toUnsignedLong(i)));
                 despesas.add(novaDespesa);
             }
-            repository.saveAll(despesas);
-            return null;
+            List<Despesa> savedAll = repository.saveAll(despesas);
+            return savedAll.get(0);
         }
         despesa.setParcelaAtual(1);
         return repository.save(despesa);
