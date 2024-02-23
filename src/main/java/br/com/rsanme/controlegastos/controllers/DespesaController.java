@@ -43,6 +43,30 @@ public class DespesaController {
         return ResponseEntity.ok(DespesaResponse.toListResponse(service.findAllByUserAndYear(userId, year)));
     }
 
+    @GetMapping("/years/{userId}")
+    @PreAuthorize("#userId == authentication.principal.id")
+    public ResponseEntity<List<Integer>> findAllYears(@PathVariable Long userId) {
+        return ResponseEntity.ok(service.findDistinctYearFromDataByUserId(userId));
+    }
+
+    @GetMapping("/months/{userId}/{year}")
+    @PreAuthorize("#userId == authentication.principal.id")
+    public ResponseEntity<List<Integer>> findAllMonthsByYear(@PathVariable Long userId, @PathVariable Integer year) {
+        return ResponseEntity.ok(service.findDistinctMonthFromDataByUserIdAndYear(userId, year));
+    }
+
+    @GetMapping("/all/{userId}/{year}/{month}")
+    @PreAuthorize("#userId == authentication.principal.id")
+    public ResponseEntity<List<DespesaResponse>> findAllByYearAndMonth(
+            @PathVariable Long userId,
+            @PathVariable int year,
+            @PathVariable int month
+    ) {
+        return ResponseEntity.ok(
+                DespesaResponse.toListResponse(service.findAllByUserAndYearAndMonth(userId, year, month))
+        );
+    }
+
     @GetMapping("/{id}")
     @PostAuthorize("returnObject.body.userId == authentication.principal.id")
     public ResponseEntity<DespesaResponse> findById(@PathVariable Long id) {

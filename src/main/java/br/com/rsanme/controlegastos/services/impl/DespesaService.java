@@ -35,10 +35,22 @@ public class DespesaService implements ICrudService<Despesa> {
         return repository.findAllByUserId(userId);
     }
 
-    public List<Despesa> findAllByUserAndYear(Long userId, Integer year){
+    public List<Despesa> findAllByUserAndYear(Long userId, Integer year) {
         LocalDate start = LocalDate.of(year, 1, 1);
         LocalDate end = LocalDate.of(year, 12, 31);
         return repository.findAllByUserIdAndDataBetween(userId, start, end);
+    }
+
+    public List<Integer> findDistinctYearFromDataByUserId(Long userId) {
+        return repository.listExpensesYearsByUser(userId);
+    }
+
+    public List<Integer> findDistinctMonthFromDataByUserIdAndYear(Long userId, Integer year) {
+        return repository.listExpensesMonthsByUserAndYear(userId, year);
+    }
+
+    public List<Despesa> findAllByUserAndYearAndMonth(Long userId, Integer year, Integer month) {
+        return repository.findAllByUserIdAndYearAndMonth(userId, year, month);
     }
 
     @Override
@@ -63,7 +75,7 @@ public class DespesaService implements ICrudService<Despesa> {
                 novaDespesa.setTipoDespesa(despesa.getTipoDespesa());
                 novaDespesa.setTipoPagamento(despesa.getTipoPagamento());
                 novaDespesa.setUser(despesa.getUser());
-                novaDespesa.setParcelaAtual(i+1);
+                novaDespesa.setParcelaAtual(i + 1);
                 novaDespesa.setData(despesa.getData().plusMonths(Integer.toUnsignedLong(i)));
                 despesas.add(novaDespesa);
             }
